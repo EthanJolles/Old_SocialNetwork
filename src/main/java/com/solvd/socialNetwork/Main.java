@@ -1,5 +1,7 @@
-package com.solvd.SocialNetwork.Main;
+package com.solvd.socialNetwork;
 
+import com.solvd.socialNetwork.profile.Profile;
+import com.solvd.socialNetwork.user.User;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
