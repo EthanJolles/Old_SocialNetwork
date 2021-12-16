@@ -1,4 +1,9 @@
 package com.solvd.socialNetwork.userContent;
 
-public class Repost extends Post {
+public class Repost {
+    private Long id;
+    private String title;
+    private Long postId;
+    private Long postUserId;
+
 }
