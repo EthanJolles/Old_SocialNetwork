@@ -6,6 +6,4 @@ public class BillingAddress {
     private String street;
     private Long userId;
     private Long cityId;
-    private Long cityStateId;
-    private Long cityStateCountryId;
 }
