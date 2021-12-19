@@ -1,4 +1,6 @@
 package com.solvd.socialNetwork.dao.mySqlImpl;
 
-public class StateDaoImpl {
+import com.solvd.socialNetwork.dao.IStateDao;
+
+public class StateDaoImpl implements IStateDao {
 }

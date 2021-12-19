@@ -1,4 +1,6 @@
 package com.solvd.socialNetwork.dao.mySqlImpl;
 
-public class OrdersDaoImpl {
+import com.solvd.socialNetwork.dao.IOrdersDao;
+
+public class OrdersDaoImpl implements IOrdersDao {
 }

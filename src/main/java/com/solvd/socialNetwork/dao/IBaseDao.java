@@ -1,8 +1,8 @@
 package com.solvd.socialNetwork.dao;
 
-public interface IBaseDao<T, K>{
+public interface IBaseDao<T>{
     void create(T t);
-    T getById(K id);
+    T getById(Integer id);
     void update(T t);
-    void delete(K id);
+    void delete(Integer id);
 }

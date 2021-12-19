@@ -1,4 +1,6 @@
 package com.solvd.socialNetwork.dao.mySqlImpl;
 
-public class ProfileDaoImpl {
+import com.solvd.socialNetwork.dao.IProfileDao;
+
+public class ProfileDaoImpl implements IProfileDao {
 }

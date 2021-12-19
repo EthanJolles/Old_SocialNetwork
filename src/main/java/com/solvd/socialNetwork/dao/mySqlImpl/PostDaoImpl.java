@@ -1,4 +1,6 @@
 package com.solvd.socialNetwork.dao.mySqlImpl;
 
-public class PostDaoImpl {
+import com.solvd.socialNetwork.dao.IPostDao;
+
+public class PostDaoImpl implements IPostDao {
 }

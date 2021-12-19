@@ -1,4 +1,6 @@
 package com.solvd.socialNetwork.dao.mySqlImpl;
 
-public class UserDaoImpl {
+import com.solvd.socialNetwork.dao.IUserDao;
+
+public class UserDaoImpl implements IUserDao {
 }
