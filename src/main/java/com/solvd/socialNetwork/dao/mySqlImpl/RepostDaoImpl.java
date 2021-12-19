@@ -1,6 +1,7 @@
 package com.solvd.socialNetwork.dao.mySqlImpl;
 
 import com.solvd.socialNetwork.dao.IRepostDao;
+import com.solvd.socialNetwork.userContent.Repost;
 
-public class RepostDaoImpl implements IRepostDao {
+public class RepostDaoImpl extends BaseDaoImpl<Repost> implements IRepostDao {
 }
