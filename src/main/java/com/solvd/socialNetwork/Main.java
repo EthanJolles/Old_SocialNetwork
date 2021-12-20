@@ -1,76 +1,41 @@
 package com.solvd.socialNetwork;
 
+import com.mysql.cj.jdbc.MysqlConnectionPoolDataSource;
 import com.solvd.socialNetwork.utils.CredentialValues;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import javax.sql.PooledConnection;
 import java.io.IOException;
 import java.sql.*;
 
 public class Main {
-    public static void main(String[] args) throws IOException {
-        final Logger LOGGER = LogManager.getLogger(Main.class);
-        LOGGER.info("Hello, world");
+
+    final static Logger LOGGER = LogManager.getLogger(Main.class);
+    public static void main(String[] args) throws IOException, SQLException {
 
         CredentialValues credentialValues = new CredentialValues();
-
         credentialValues.getPropValues("db.properties");
 
-        Connection connection = null;
-        try {
+        MysqlConnectionPoolDataSource ds = new MysqlConnectionPoolDataSource();
 
-            // Load the MySQL JDBC driver
+        ds.setURL(credentialValues.getUrl());
+        ds.setUser(credentialValues.getUser());
+        ds.setPassword(credentialValues.getPassword());
 
-            String driverName = "com.mysql.cj.jdbc.Driver";
+        PooledConnection pc = ds.getPooledConnection();
 
-            Class.forName(driverName);
+        Connection con = pc.getConnection();
 
-            // Create a connection to the database
+        Statement st = con.createStatement();
 
-//            String serverName = System.getenv("SERVER");
-            String serverName = credentialValues.getUrl();
+        ResultSet rs = st.executeQuery("SELECT * FROM SocialNetwork.user");
 
-//            String schema = System.getenv("SCHEMA");
-            String schema = credentialValues.getSchema();
-
-            String url = "jdbc:mysql://" + serverName +  "/" + schema;
-
-//            String username = System.getenv("USER");
-            String username = credentialValues.getName();
-
-
-            String password = credentialValues.getPassword();
-
-            connection = DriverManager.getConnection(url, username, password);
-
-
-            LOGGER.info("Successfully Connected to the database!");
-
-
-        } catch (ClassNotFoundException e) {
-
-            LOGGER.info("Could not find the database driver " + e.getMessage());
-        } catch (SQLException e) {
-
-            LOGGER.info("Could not connect to the database " + e.getMessage());
-        }
-
-        try {
-            // Get a result set containing all data from test_table
-
-            Statement statement = connection.createStatement();
-
-            ResultSet results = statement.executeQuery("SELECT * FROM SocialNetwork.user");
-
-            while (results.next()) {
-                // Get the data from the current row using the column index - column data are in the VARCHAR format
-                String data = results.getString("username");
-                LOGGER.info("Fetching data by column name for row " + results.getRow() + " : " + data);
-            }
-
-        } catch (SQLException e) {
-
-            LOGGER.info("Could not retrieve data from the database " + e.getMessage());
+        while (rs.next()) {
+            String data = rs.getString("username");
+            LOGGER.info("Fetching data by column name for row " + rs.getRow() + " : " + data);
+            String dataId = rs.getString("id");
+            LOGGER.info("Fetching data by column name for row " + rs.getRow() + " : " + dataId);
         }
     }
 }
