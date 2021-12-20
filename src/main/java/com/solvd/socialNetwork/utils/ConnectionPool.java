@@ -22,13 +22,12 @@ public class ConnectionPool {
     }
 
     public void obtainConnection() {
-        Connection conn = null;
+        Connection conn;
         try {
             conn = DriverManager.getConnection(System.getenv("URL"),
                     System.getenv("USER"),
                     System.getenv("PASS"));
 
-            LOGGER.info(conn.getSchema());
         } catch (SQLException ex) {
             // handle any errors
             LOGGER.info("SQLException: " + ex.getMessage());
