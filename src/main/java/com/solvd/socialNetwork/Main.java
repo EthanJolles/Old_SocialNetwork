@@ -1,13 +1,20 @@
 package com.solvd.socialNetwork;
 
+import com.solvd.socialNetwork.utils.CredentialValues;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+
+import java.io.IOException;
 import java.sql.*;
 
 public class Main {
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
         final Logger LOGGER = LogManager.getLogger(Main.class);
         LOGGER.info("Hello, world");
+
+        CredentialValues credentialValues = new CredentialValues();
+
+        credentialValues.getPropValues("db.properties");
 
         Connection connection = null;
         try {
@@ -20,15 +27,19 @@ public class Main {
 
             // Create a connection to the database
 
-            String serverName = System.getenv("SERVER");
+//            String serverName = System.getenv("SERVER");
+            String serverName = credentialValues.getUrl();
 
-            String schema = System.getenv("SCHEMA");
+//            String schema = System.getenv("SCHEMA");
+            String schema = credentialValues.getSchema();
 
             String url = "jdbc:mysql://" + serverName +  "/" + schema;
 
-            String username = System.getenv("USER");
+//            String username = System.getenv("USER");
+            String username = credentialValues.getName();
 
-            String password = System.getenv("PASS");
+
+            String password = credentialValues.getPassword();
 
             connection = DriverManager.getConnection(url, username, password);
 

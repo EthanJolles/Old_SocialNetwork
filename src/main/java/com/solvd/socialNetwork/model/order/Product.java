@@ -4,8 +4,9 @@ import java.util.Date;
 
 public class Product {
     private Long id;
-    private Double productPrice;
-    private String productDesc;
+    private String name;
+    private Double price;
+    private String desc;
     private Date dateListed;
     private Boolean isOutOfStock;
 }
