@@ -8,6 +8,7 @@ logs
 target
 txt
 .DS_Store
+.properties
 
 # User-specific stuff
 .idea/**/workspace.xml
