@@ -2,7 +2,6 @@ package com.solvd.socialNetwork;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-
 import java.sql.*;
 
 public class Main {
@@ -51,8 +50,6 @@ public class Main {
             Statement statement = connection.createStatement();
 
             ResultSet results = statement.executeQuery("SELECT * FROM SocialNetwork.user");
-
-            // For each row of the result set ...
 
             while (results.next()) {
                 // Get the data from the current row using the column index - column data are in the VARCHAR format
