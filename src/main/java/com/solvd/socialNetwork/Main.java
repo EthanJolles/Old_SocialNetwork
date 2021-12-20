@@ -33,15 +33,15 @@ public class Main {
             connection = DriverManager.getConnection(url, username, password);
 
 
-            System.out.println("Successfully Connected to the database!");
+            LOGGER.info("Successfully Connected to the database!");
 
 
         } catch (ClassNotFoundException e) {
 
-            System.out.println("Could not find the database driver " + e.getMessage());
+            LOGGER.info("Could not find the database driver " + e.getMessage());
         } catch (SQLException e) {
 
-            System.out.println("Could not connect to the database " + e.getMessage());
+            LOGGER.info("Could not connect to the database " + e.getMessage());
         }
 
         try {
