@@ -9,8 +9,10 @@ public class Main {
         final Logger LOGGER = LogManager.getLogger(Main.class);
         LOGGER.info("Hello, world");
 
-        ConnectionPool connectionPool = new ConnectionPool();
-        connectionPool.loadDriver();
-        connectionPool.obtainConnection();
+        ConnectionPool connectionPool = new ConnectionPool(
+                System.getenv("SERVER"),
+                System.getenv("SCHEMA"),
+                System.getenv("USER"),
+                System.getenv("PASSWORD"));
     }
 }
