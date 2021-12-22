@@ -1,9 +1,9 @@
 package com.solvd.socialNetwork;
 
 import com.solvd.socialNetwork.utils.ConnectionPool;
+import com.solvd.socialNetwork.utils.DomParser;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-
 import java.io.IOException;
 import java.sql.*;
 
@@ -21,5 +21,7 @@ public class Main {
             LOGGER.info("UserID: " + rs.getString("id"));
             LOGGER.info("Username: " + rs.getString("username"));
         }
+
+        DomParser.parseDom("user");
     }
 }
