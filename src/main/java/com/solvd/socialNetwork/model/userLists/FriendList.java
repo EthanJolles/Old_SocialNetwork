@@ -6,6 +6,6 @@ import java.util.List;
 
 public class FriendList {
     private Long id;
-    private List<Profile> profiles;
     private Long userId;
+    private Long friendProfileId;
 }

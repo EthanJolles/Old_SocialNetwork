@@ -5,6 +5,6 @@ import java.util.List;
 
 public class BlockedList {
     private Long id;
-    private List<Profile> profiles;
-    private Long userId;
+    private Long profileId;
+    private Long blockedProfileId;
 }

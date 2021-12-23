@@ -8,7 +8,8 @@ public class Profile {
     private String lastName;
     private Character middleInitial;
     private Date birthday;
-    private Integer age;
+    private Long age;
     private String bio;
     private Boolean isVerified;
+    private Long userId;
 }

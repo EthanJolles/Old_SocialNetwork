@@ -8,5 +8,7 @@ public class Product {
     private Double price;
     private String desc;
     private Date dateListed;
+    private Long sku;
+    private Long modelNumber;
     private Boolean isOutOfStock;
 }
