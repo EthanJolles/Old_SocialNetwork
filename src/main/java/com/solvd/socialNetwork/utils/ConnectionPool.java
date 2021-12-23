@@ -35,6 +35,9 @@ public class ConnectionPool {
             ds.setURL(prop.getProperty("url"));
             ds.setUser(prop.getProperty("user"));
             ds.setPassword(prop.getProperty("password"));
+        } catch (IOException e) {
+            LOGGER.error("Met IOException");
+            throw new IOException();
         } catch (Exception e) {
             LOGGER.error("Met exception " + e);
         }
