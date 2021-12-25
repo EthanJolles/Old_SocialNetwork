@@ -20,7 +20,7 @@ public class DomParser {
         DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
         try {
             DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
-            Document document = documentBuilder.parse("SocialNetwork/src/main/resources/" + fileName + ".xml");
+            Document document = documentBuilder.parse("src/main/resources/" + fileName + ".xml");
             NodeList nodeList = document.getElementsByTagName(fileName);
 
             for (int i = 0; i < nodeList.getLength(); i++) {
