@@ -31,7 +31,6 @@ public class ConnectionPool {
             } else {
                 throw new FileNotFoundException(file + " not found");
             }
-
             ds.setURL(prop.getProperty("url"));
             ds.setUser(prop.getProperty("user"));
             ds.setPassword(prop.getProperty("password"));
@@ -43,7 +42,7 @@ public class ConnectionPool {
         }
     }
 
-    public Connection getConnection() throws SQLException {
+    public static Connection getConnection() throws SQLException {
         return ds.getConnection();
     }
 
