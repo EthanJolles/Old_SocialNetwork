@@ -1,9 +1,16 @@
 package com.solvd.socialNetwork.model.user;
 
+import java.util.concurrent.atomic.AtomicLong;
+
 public class User {
     private Long id;
     private String username;
-    private Long encryptedPassword;
+    private String password;
+
+    public User(String username, String password) {
+        this.username = username;
+        this.password = password;
+    }
 
     public Long getId() {
         return id;
@@ -21,11 +28,11 @@ public class User {
         this.username = username;
     }
 
-    public Long getEncryptedPassword() {
-        return encryptedPassword;
+    public String getPassword() {
+        return password;
     }
 
-    public void setEncryptedPassword(Long encryptedPassword) {
-        this.encryptedPassword = encryptedPassword;
+    public void setPassword(String password) {
+        this.password = password;
     }
 }

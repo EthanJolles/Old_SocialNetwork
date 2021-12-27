@@ -1,54 +1,74 @@
 package com.solvd.socialNetwork.utils;
 
-import com.mysql.cj.jdbc.MysqlConnectionPoolDataSource;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.InputStream;
 import java.sql.Connection;
-import java.sql.ResultSet;
+import java.sql.DriverManager;
 import java.sql.SQLException;
-import java.sql.Statement;
-import java.util.Properties;
+import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 public class ConnectionPool {
-    final private static Logger LOGGER = LogManager.getLogger(ConnectionPool.class);
-    private static final MysqlConnectionPoolDataSource ds = new MysqlConnectionPoolDataSource();
-    private final Properties prop = new Properties();
+    final static Logger LOGGER = LogManager.getLogger(ConnectionPool.class);
 
-    public ConnectionPool(String file) throws IOException {
-        getPropValues(file);
-    }
+    private static ConnectionPool connectionPool;
+    private List<Connection> connections = new CopyOnWriteArrayList<>();
 
-    private void getPropValues(String file) throws IOException {
-        try {
-            InputStream inputStream = getClass().getClassLoader().getResourceAsStream(file);
+    private static final String URL = System.getenv("URL");
+    private static final String USER = System.getenv("USER");
+    private static final String PASSWORD = System.getenv("PASSWORD");
+    private static final int INITIAL_POOL_SIZE = 5;
 
-            if (inputStream != null) {
-                prop.load(inputStream);
-            } else {
-                throw new FileNotFoundException(file + " not found");
+    public ConnectionPool() {
+        LOGGER.info("Entering ConnectionPool constructor");
+        for (int i = 0; i < INITIAL_POOL_SIZE; i++) {
+            Connection connection;
+            try {
+                Class.forName("com.mysql.cj.jdbc.Driver");
+                connection = DriverManager.getConnection(URL, USER, PASSWORD);
+                connections.add(connection);
+            } catch (SQLException | ClassNotFoundException e) {
+                LOGGER.error(e);
             }
-            ds.setURL(prop.getProperty("url"));
-            ds.setUser(prop.getProperty("user"));
-            ds.setPassword(prop.getProperty("password"));
-        } catch (IOException e) {
-            LOGGER.error("Met IOException");
-            throw new IOException();
-        } catch (Exception e) {
-            LOGGER.error("Met exception " + e);
         }
     }
 
-    public static Connection getConnection() throws SQLException {
-        return ds.getConnection();
+    public static ConnectionPool getConnectionPool() {
+        if (connectionPool == null) {
+            synchronized (ConnectionPool.class) {
+                    connectionPool = new ConnectionPool();
+            }
+        }
+        return connectionPool;
     }
 
-    public ResultSet easyQuery(String sql) throws SQLException {
-        Connection connection = getConnection();
-        Statement statement = connection.createStatement();
-        return  statement.executeQuery(sql);
+
+    private boolean isConnectionAvailable() {
+        if (connections.isEmpty()) {
+            try {
+                LOGGER.info("connection is empty");
+                Thread.sleep(50);
+            } catch (InterruptedException e) {
+                LOGGER.error(e);
+            }
+            isConnectionAvailable();
+        }
+        return true;
+    }
+
+    public synchronized Connection getConnection() {
+        Connection connection = null;
+        if (isConnectionAvailable()) {
+            LOGGER.info("Pool size = " + connections.size());
+            connection = connections.get(0);
+            connections.remove(0);
+            LOGGER.info("Pool size after = " + connections.size());
+        }
+        return connection;
+    }
+
+    public synchronized void releaseConnection(Connection connection) {
+        connections.add(connection);
     }
 }

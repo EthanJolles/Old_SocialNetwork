@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<products>
+    <product id="1">
+        <name>Macbook Air</name>
+        <price>1000.00</price>
+        <desc>Default description</desc>
+        <dateListed>11-17-2020</dateListed>
+        <sku>5721600</sku>
+        <modelNumber>MGN63LL/A</modelNumber>
+        <isOutOfStock>false</isOutOfStock>
+    </product>
+</products>
