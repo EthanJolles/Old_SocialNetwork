@@ -6,7 +6,7 @@ public class Profile {
     private Long id;
     private String firstName;
     private String lastName;
-    private Character middleInitial;
+    private String middleInitial;
     private Date birthday;
     private Long age;
     private String bio;
@@ -16,7 +16,7 @@ public class Profile {
     public Profile() {
     }
 
-    public Profile(String firstName, String lastName, Character middleInitial,
+    public Profile(String firstName, String lastName, String middleInitial,
                    Date birthday, Long age, String bio, Boolean isVerified, Long userId) {
         this.firstName = firstName;
         this.lastName = lastName;
@@ -52,11 +52,11 @@ public class Profile {
         this.lastName = lastName;
     }
 
-    public Character getMiddleInitial() {
+    public String getMiddleInitial() {
         return middleInitial;
     }
 
-    public void setMiddleInitial(Character middleInitial) {
+    public void setMiddleInitial(String middleInitial) {
         this.middleInitial = middleInitial;
     }
 

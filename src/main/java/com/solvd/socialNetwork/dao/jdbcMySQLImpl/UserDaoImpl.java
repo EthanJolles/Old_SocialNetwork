@@ -16,8 +16,9 @@ public class UserDaoImpl extends AbstractDao<User> implements IUserDao {
     private static final Logger LOGGER = LogManager.getLogger(UserDaoImpl.class);
     private static final String CREATE_USER = "Insert into user (username, password) VALUES (?, ?)";
     private static final String GET_USER_BY_ID = "Select * from user where id=?";
-    private static final String UPDATE_USER = "Update user set password = ? where id = ?";
+    private static final String UPDATE_USER = "Update user set username = ?, password = ? where id = ?";
     private static final String DELETE_USER = "Delete from user where id = ?";
+
     @Override
     public void create(User user) throws SQLException {
         Connection connection = null;
@@ -78,7 +79,7 @@ public class UserDaoImpl extends AbstractDao<User> implements IUserDao {
         try {
             connection = ConnectionPool.getConnectionPool().getConnection();
             statement = connection.prepareStatement(UPDATE_USER);
-            statement.setString(1, entity.getUsername());
+            statement.setString(1,entity.getUsername());
             statement.setString(2, entity.getPassword());
             statement.executeUpdate();
         } catch (Exception e) {

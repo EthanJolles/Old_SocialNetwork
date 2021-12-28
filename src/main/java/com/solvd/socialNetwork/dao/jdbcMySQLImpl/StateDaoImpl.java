@@ -15,8 +15,9 @@ public class StateDaoImpl extends AbstractDao<State> implements IStateDao {
     private static final Logger LOGGER = LogManager.getLogger(StateDaoImpl.class);
     private static final String CREATE_STATE = "Insert into state (state, country_id) VALUES (?, ?)";
     private static final String GET_STATE_BY_ID = "Select * from state where id = ?";
-    private static final String UPDATE_STATE = "Update state set state = ? where id = ?";
+    private static final String UPDATE_STATE = "Update state set state = ?, country_id = ? where id = ?";
     private static final String DELETE_STATE = "Delete from state where id = ?";
+
     @Override
     public void create(State state) throws SQLException {
         Connection connection = null;
@@ -42,7 +43,6 @@ public class StateDaoImpl extends AbstractDao<State> implements IStateDao {
         PreparedStatement statement = null;
         ResultSet resultSet;
         State state = null;
-
         try {
             connection = ConnectionPool.getConnectionPool().getConnection();
             statement = connection.prepareStatement(GET_STATE_BY_ID);
@@ -104,6 +104,5 @@ public class StateDaoImpl extends AbstractDao<State> implements IStateDao {
             statement.close();
             ConnectionPool.getConnectionPool().releaseConnection(connection);
         }
-
     }
 }

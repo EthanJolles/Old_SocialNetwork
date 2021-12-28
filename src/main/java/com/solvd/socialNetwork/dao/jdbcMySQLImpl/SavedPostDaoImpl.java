@@ -16,11 +16,26 @@ public class SavedPostDaoImpl extends AbstractDao<SavedPost> implements ISavedPo
     private static final Logger LOGGER = LogManager.getLogger(SavedPostDaoImpl.class);
     private static final String CREATE_SAVED_POST = "Insert into saved_post (name, post_id) VALUES (?, ?)";
     private static final String GET_SAVED_POST_BY_ID = "Select * from saved_post where id = ?";
-    private static final String UPDATE_SAVED_POST = "Update saved_post set name = ? where id = ?";
+    private static final String UPDATE_SAVED_POST = "Update saved_post set name = ?, post_id = ? where id = ?";
     private static final String DELETE_SAVED_POST = "Delete from saved_post where id = ?";
-    @Override
-    public void create(SavedPost savedPost) {
 
+    @Override
+    public void create(SavedPost savedPost) throws SQLException {
+        Connection connection = null;
+        PreparedStatement statement = null;
+        try {
+            connection = ConnectionPool.getConnectionPool().getConnection();
+            statement = connection.prepareStatement(CREATE_SAVED_POST);
+            statement.setString(1, savedPost.getTitle());
+            statement.setLong(2, savedPost.getPostId());
+            statement.executeUpdate();
+        } catch (Exception e) {
+            LOGGER.error(e);
+        } finally {
+            assert statement != null;
+            statement.close();
+            ConnectionPool.getConnectionPool().releaseConnection(connection);
+        }
     }
 
     @Override
@@ -58,12 +73,39 @@ public class SavedPostDaoImpl extends AbstractDao<SavedPost> implements ISavedPo
     }
 
     @Override
-    public void update(SavedPost entity) {
-
+    public void update(SavedPost entity) throws SQLException {
+        Connection connection = null;
+        PreparedStatement statement = null;
+        try {
+            connection = ConnectionPool.getConnectionPool().getConnection();
+            statement = connection.prepareStatement(UPDATE_SAVED_POST);
+            statement.setString(1, entity.getTitle());
+            statement.setLong(2, entity.getPostId());
+            statement.executeUpdate();
+        } catch (Exception e) {
+            LOGGER.error(e);
+        } finally {
+            assert statement != null;
+            statement.close();
+            ConnectionPool.getConnectionPool().releaseConnection(connection);
+        }
     }
 
     @Override
-    public void delete(Long id) {
-
+    public void delete(Long id) throws SQLException {
+        Connection connection = null;
+        PreparedStatement statement = null;
+        try {
+            connection = ConnectionPool.getConnectionPool().getConnection();
+            statement = connection.prepareStatement(DELETE_SAVED_POST);
+            statement.setLong(1, id);
+            statement.executeUpdate();
+        } catch (Exception e) {
+            LOGGER.error(e);
+        } finally {
+            assert statement != null;
+            statement.close();
+            ConnectionPool.getConnectionPool().releaseConnection(connection);
+        }
     }
 }
