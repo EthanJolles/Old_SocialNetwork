@@ -1,4 +1,4 @@
-package com.solvd.socialNetwork.model.user;
+package com.solvd.socialNetwork.model.userContent;
 
 import java.util.Date;
 

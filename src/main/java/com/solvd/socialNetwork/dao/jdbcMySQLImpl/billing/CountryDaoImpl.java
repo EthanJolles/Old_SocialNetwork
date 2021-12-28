@@ -2,7 +2,7 @@ package com.solvd.socialNetwork.dao.jdbcMySQLImpl.billing;
 
 import com.solvd.socialNetwork.dao.jdbcMySQLImpl.AbstractDao;
 import com.solvd.socialNetwork.model.billing.Country;
-import com.solvd.socialNetwork.dao.ICountryDao;
+import com.solvd.socialNetwork.dao.interfaces.billing.ICountryDao;
 import com.solvd.socialNetwork.utils.ConnectionPool;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;

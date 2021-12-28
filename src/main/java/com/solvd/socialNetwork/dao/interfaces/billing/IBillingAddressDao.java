@@ -1,5 +1,6 @@
-package com.solvd.socialNetwork.dao;
+package com.solvd.socialNetwork.dao.interfaces.billing;
 
+import com.solvd.socialNetwork.dao.interfaces.IBaseDao;
 import com.solvd.socialNetwork.model.billing.BillingAddress;
 
 //This interface and all like it are here to declare any extra operations for specific tables.

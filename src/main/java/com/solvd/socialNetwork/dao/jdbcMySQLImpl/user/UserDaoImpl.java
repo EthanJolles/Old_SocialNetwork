@@ -1,6 +1,6 @@
 package com.solvd.socialNetwork.dao.jdbcMySQLImpl.user;
 
-import com.solvd.socialNetwork.dao.IUserDao;
+import com.solvd.socialNetwork.dao.interfaces.user.IUserDao;
 import com.solvd.socialNetwork.dao.jdbcMySQLImpl.AbstractDao;
 import com.solvd.socialNetwork.model.user.User;
 import com.solvd.socialNetwork.utils.ConnectionPool;

@@ -1,6 +1,6 @@
 package com.solvd.socialNetwork.dao.jdbcMySQLImpl.userContent;
 
-import com.solvd.socialNetwork.dao.IBlockedListDao;
+import com.solvd.socialNetwork.dao.interfaces.userList.IBlockedListDao;
 import com.solvd.socialNetwork.dao.jdbcMySQLImpl.AbstractDao;
 import com.solvd.socialNetwork.model.userList.BlockedList;
 import com.solvd.socialNetwork.utils.ConnectionPool;

@@ -1,6 +1,6 @@
 package com.solvd.socialNetwork.dao.jdbcMySQLImpl.userContent;
 
-import com.solvd.socialNetwork.dao.ILikedPostDao;
+import com.solvd.socialNetwork.dao.interfaces.userContent.ILikedPostDao;
 import com.solvd.socialNetwork.dao.jdbcMySQLImpl.AbstractDao;
 import com.solvd.socialNetwork.model.userContent.LikedPost;
 import com.solvd.socialNetwork.utils.ConnectionPool;

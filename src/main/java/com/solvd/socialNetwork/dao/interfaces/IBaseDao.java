@@ -1,4 +1,4 @@
-package com.solvd.socialNetwork.dao;
+package com.solvd.socialNetwork.dao.interfaces;
 
 //This interface is here to state all of the different CRUD operations we want to perform.
 //Take a look at resources/DaoDesign.png for a model of it.

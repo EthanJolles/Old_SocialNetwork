@@ -1,6 +1,6 @@
 package com.solvd.socialNetwork.dao.jdbcMySQLImpl.userContent;
 
-import com.solvd.socialNetwork.dao.IRepostDao;
+import com.solvd.socialNetwork.dao.interfaces.userContent.IRepostDao;
 import com.solvd.socialNetwork.dao.jdbcMySQLImpl.AbstractDao;
 import com.solvd.socialNetwork.model.userContent.Repost;
 import com.solvd.socialNetwork.utils.ConnectionPool;

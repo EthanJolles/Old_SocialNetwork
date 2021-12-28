@@ -1,6 +1,6 @@
 package com.solvd.socialNetwork.dao.jdbcMySQLImpl.userList;
 
-import com.solvd.socialNetwork.dao.IFriendListDao;
+import com.solvd.socialNetwork.dao.interfaces.userList.IFriendListDao;
 import com.solvd.socialNetwork.dao.jdbcMySQLImpl.AbstractDao;
 import com.solvd.socialNetwork.model.userList.FriendList;
 import com.solvd.socialNetwork.utils.ConnectionPool;

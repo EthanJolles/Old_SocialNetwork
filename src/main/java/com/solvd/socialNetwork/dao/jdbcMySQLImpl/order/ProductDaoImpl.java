@@ -1,6 +1,6 @@
 package com.solvd.socialNetwork.dao.jdbcMySQLImpl.order;
 
-import com.solvd.socialNetwork.dao.IProductDao;
+import com.solvd.socialNetwork.dao.interfaces.order.IProductDao;
 import com.solvd.socialNetwork.dao.jdbcMySQLImpl.AbstractDao;
 import com.solvd.socialNetwork.model.order.Product;
 import com.solvd.socialNetwork.utils.ConnectionPool;
