@@ -1,11 +1,12 @@
 package com.solvd.socialNetwork.model.user;
 
-import java.util.concurrent.atomic.AtomicLong;
-
 public class User {
     private Long id;
     private String username;
     private String password;
+
+    public User() {
+    }
 
     public User(String username, String password) {
         this.username = username;

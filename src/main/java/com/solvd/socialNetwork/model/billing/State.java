@@ -5,6 +5,14 @@ public class State {
     private String state;
     private Long countryId;
 
+    public State() {
+    }
+
+    public State( String state, Long countryId) {
+        this.state = state;
+        this.countryId = countryId;
+    }
+
     public Long getId() {
         return id;
     }

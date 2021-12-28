@@ -8,6 +8,16 @@ public class Post {
     private Boolean isPicture;
     private Long userId;
 
+    public Post() {
+    }
+
+    public Post(String location, String caption, Boolean isPicture, Long userId) {
+        this.location = location;
+        this.caption = caption;
+        this.isPicture = isPicture;
+        this.userId = userId;
+    }
+
     public Long getId() {
         return id;
     }

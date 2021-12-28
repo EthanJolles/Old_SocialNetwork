@@ -5,6 +5,14 @@ public class LikedPost {
     private String title;
     private Long postId;
 
+    public LikedPost() {
+    }
+
+    public LikedPost(String title, Long postId) {
+        this.title = title;
+        this.postId = postId;
+    }
+
     public Long getId() {
         return id;
     }

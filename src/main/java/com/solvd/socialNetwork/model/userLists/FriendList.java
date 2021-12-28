@@ -10,6 +10,14 @@ public class FriendList {
     private Long userId;
     private Long friendProfileId;
 
+    public FriendList() {
+    }
+
+    public FriendList(Long userId, Long friendProfileId) {
+        this.userId = userId;
+        this.friendProfileId = friendProfileId;
+    }
+
     public Long getId() {
         return id;
     }

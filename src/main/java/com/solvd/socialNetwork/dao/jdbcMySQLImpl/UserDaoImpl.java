@@ -8,22 +8,20 @@ import org.apache.logging.log4j.Logger;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class UserDaoImpl extends AbstractDao<User> implements IUserDao {
 
     private static final Logger LOGGER = LogManager.getLogger(UserDaoImpl.class);
-    private static final String GET_USERS_BY_ID = "Select * from user where id=?";
     private static final String CREATE_USER = "Insert into user (username, password) VALUES (?, ?)";
-    private static final String UPDATE_USER = "Update user set password = ? where username = ?";
+    private static final String GET_USER_BY_ID = "Select * from user where id=?";
+    private static final String UPDATE_USER = "Update user set password = ? where id = ?";
     private static final String DELETE_USER = "Delete from user where id = ?";
-    private static final String GET_USER_BY_USERNAME = "Select * from user where username = ?";
-
     @Override
     public void create(User user) throws SQLException {
-        Connection connection;
+        Connection connection = null;
         PreparedStatement statement = null;
-
         try {
             connection = ConnectionPool.getConnectionPool().getConnection();
             statement = connection.prepareStatement(CREATE_USER);
@@ -35,21 +33,78 @@ public class UserDaoImpl extends AbstractDao<User> implements IUserDao {
         } finally {
             assert statement != null;
             statement.close();
-            ConnectionPool.getConnectionPool();
+            ConnectionPool.getConnectionPool().releaseConnection(connection);
         }
     }
 
     @Override
-    public User getById(Long id) {
-        return null;
+    public User getById(Long id) throws SQLException {
+        Connection connection = null;
+        PreparedStatement statement = null;
+        ResultSet resultSet;
+        User user = null;
+
+        try {
+            connection = ConnectionPool.getConnectionPool().getConnection();
+            statement = connection.prepareStatement(GET_USER_BY_ID);
+            statement.setLong(1, id);
+            resultSet = statement.executeQuery();
+            user = resultSetToUser(resultSet);
+        } catch (Exception e) {
+            LOGGER.error(e);
+        } finally {
+            assert statement != null;
+            statement.close();
+            ConnectionPool.getConnectionPool().releaseConnection(connection);
+        }
+        return user;
+    }
+
+    public User resultSetToUser(ResultSet resultSet) {
+        User user = new User();
+        try {
+            user.setUsername(resultSet.getString("first_name"));
+            user.setPassword(resultSet.getString("last_name"));
+        } catch (SQLException e) {
+            LOGGER.error(e);
+        }
+        return user;
     }
 
     @Override
-    public void update(User user) {
-
+    public void update(User entity) throws SQLException {
+        Connection connection = null;
+        PreparedStatement statement = null;
+        try {
+            connection = ConnectionPool.getConnectionPool().getConnection();
+            statement = connection.prepareStatement(UPDATE_USER);
+            statement.setString(1, entity.getUsername());
+            statement.setString(2, entity.getPassword());
+            statement.executeUpdate();
+        } catch (Exception e) {
+            LOGGER.error(e);
+        } finally {
+            assert statement != null;
+            statement.close();
+            ConnectionPool.getConnectionPool().releaseConnection(connection);
+        }
     }
 
     @Override
-    public void delete(Long id) {
+    public void delete(Long id) throws SQLException {
+        Connection connection = null;
+        PreparedStatement statement = null;
+        try {
+            connection = ConnectionPool.getConnectionPool().getConnection();
+            statement = connection.prepareStatement(DELETE_USER);
+            statement.setLong(1, id);
+            statement.executeUpdate();
+        } catch (Exception e) {
+            LOGGER.error(e);
+        } finally {
+            assert statement != null;
+            statement.close();
+            ConnectionPool.getConnectionPool().releaseConnection(connection);
+        }
     }
 }

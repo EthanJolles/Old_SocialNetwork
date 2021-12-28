@@ -13,6 +13,21 @@ public class Profile {
     private Boolean isVerified;
     private Long userId;
 
+    public Profile() {
+    }
+
+    public Profile(String firstName, String lastName, Character middleInitial,
+                   Date birthday, Long age, String bio, Boolean isVerified, Long userId) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.middleInitial = middleInitial;
+        this.birthday = birthday;
+        this.age = age;
+        this.bio = bio;
+        this.isVerified = isVerified;
+        this.userId = userId;
+    }
+
     public Long getId() {
         return id;
     }

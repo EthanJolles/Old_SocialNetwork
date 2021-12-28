@@ -6,6 +6,14 @@ public class BlockedList {
     private Long profileId;
     private Long blockedProfileId;
 
+    public BlockedList() {
+    }
+
+    public BlockedList(Long profileId, Long blockedProfileId) {
+        this.profileId = profileId;
+        this.blockedProfileId = blockedProfileId;
+    }
+
     public Long getId() {
         return id;
     }

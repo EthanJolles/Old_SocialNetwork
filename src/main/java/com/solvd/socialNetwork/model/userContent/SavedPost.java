@@ -6,6 +6,14 @@ public class SavedPost {
     private String title;
     private Long postId;
 
+    public SavedPost() {
+    }
+
+    public SavedPost(String title, Long postId) {
+        this.title = title;
+        this.postId = postId;
+    }
+
     public Long getId() {
         return id;
     }

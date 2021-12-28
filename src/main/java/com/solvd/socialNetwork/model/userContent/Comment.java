@@ -1,10 +1,18 @@
 package com.solvd.socialNetwork.model.userContent;
 
-public class Comments {
+public class Comment {
 
     private Long id;
     private String contents;
     private Long postId;
+
+    public Comment() {
+    }
+
+    public Comment(String contents, Long postId) {
+        this.contents = contents;
+        this.postId = postId;
+    }
 
     public Long getId() {
         return id;

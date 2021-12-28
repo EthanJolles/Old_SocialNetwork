@@ -4,6 +4,13 @@ public class Country {
     private Long id;
     private String country;
 
+    public Country() {
+    }
+
+    public Country(String country) {
+        this.country = country;
+    }
+
     public Long getId() {
         return id;
     }

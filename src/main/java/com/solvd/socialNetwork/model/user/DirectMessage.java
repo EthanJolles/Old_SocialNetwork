@@ -9,6 +9,16 @@ public class DirectMessage {
     private Long recipientId;
     private Long userId;
 
+    public DirectMessage() {
+    }
+
+    public DirectMessage(String message, Date dateSent, Long recipientId, Long userId) {
+        this.message = message;
+        this.dateSent = dateSent;
+        this.recipientId = recipientId;
+        this.userId = userId;
+    }
+
     public Long getId() {
         return id;
     }

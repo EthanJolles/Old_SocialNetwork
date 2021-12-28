@@ -5,6 +5,14 @@ public class City {
     private String city;
     private Long stateId;
 
+    public City() {
+    }
+
+    public City(String city, Long stateId) {
+        this.city = city;
+        this.stateId = stateId;
+    }
+
     public Long getId() {
         return id;
     }

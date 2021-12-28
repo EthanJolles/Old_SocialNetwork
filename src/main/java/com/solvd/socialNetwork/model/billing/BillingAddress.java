@@ -7,6 +7,16 @@ public class BillingAddress {
     private Long userId;
     private Long cityId;
 
+    public BillingAddress() {
+    }
+
+    public BillingAddress(Integer zip, String street, Long userId, Long cityId) {
+        this.zip = zip;
+        this.street = street;
+        this.userId = userId;
+        this.cityId = cityId;
+    }
+
     public Long getId() {
         return id;
     }

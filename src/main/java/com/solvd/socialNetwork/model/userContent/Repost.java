@@ -6,6 +6,14 @@ public class Repost {
     private String title;
     private Long postId;
 
+    public Repost() {
+    }
+
+    public Repost(String title, Long postId) {
+        this.title = title;
+        this.postId = postId;
+    }
+
     public Long getId() {
         return id;
     }
