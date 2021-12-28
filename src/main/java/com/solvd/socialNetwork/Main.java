@@ -1,6 +1,7 @@
 package com.solvd.socialNetwork;
 
 import com.solvd.socialNetwork.dao.jdbcMySQLImpl.user.UserDaoImpl;
+import com.solvd.socialNetwork.enums.Month;
 import com.solvd.socialNetwork.model.user.User;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;

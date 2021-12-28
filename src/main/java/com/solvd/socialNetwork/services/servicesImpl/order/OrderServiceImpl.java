@@ -5,4 +5,5 @@ import com.solvd.socialNetwork.services.interfaces.order.IOrderService;
 import com.solvd.socialNetwork.services.servicesImpl.AbstractServiceImpl;
 
 public class OrderServiceImpl extends AbstractServiceImpl<Order> implements IOrderService {
+
 }
