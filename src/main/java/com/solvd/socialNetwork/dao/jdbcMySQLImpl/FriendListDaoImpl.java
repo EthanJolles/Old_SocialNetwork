@@ -1,6 +1,8 @@
 package com.solvd.socialNetwork.dao.jdbcMySQLImpl;
 
 import com.solvd.socialNetwork.dao.IFriendListDao;
+import com.solvd.socialNetwork.model.billing.State;
+import com.solvd.socialNetwork.model.order.Order;
 import com.solvd.socialNetwork.model.userContent.SavedPost;
 import com.solvd.socialNetwork.model.userLists.FriendList;
 import com.solvd.socialNetwork.utils.ConnectionPool;
@@ -17,32 +19,78 @@ public class FriendListDaoImpl extends AbstractDao<FriendList> implements IFrien
     private static final Logger LOGGER = LogManager.getLogger(FriendListDaoImpl.class);
     private static final String CREATE_FRIEND_LIST = "Insert into friend_list (profile_id, friend_profile_id) VALUES (?, ?)";
     private static final String GET_FRIEND_LIST_BY_ID = "Select * from friend_list where id=?";
-    private static final String UPDATE_FRIEND_LIST = "Update friend_list set profile_id = ? where id = ?";
+    private static final String UPDATE_FRIEND_LIST = "Update friend_list set friend_profile_id = ? where id = ?";
     private static final String DELETE_FRIEND_LIST = "Delete from friend_list where id = ?";
-    @Override
-    public void create(FriendList friendList) {
-
-    }
 
     @Override
-    public FriendList getById(Long id) {
-        return null;
-    }
-
-    public SavedPost resultSetToSavedPost(ResultSet resultSet) {
-        SavedPost savedPost = new SavedPost();
+    public void create(FriendList friendList) throws SQLException {
+        Connection connection = null;
+        PreparedStatement statement = null;
         try {
-            savedPost.setTitle(resultSet.getString("name"));
-            savedPost.setPostId(resultSet.getLong("post_id"));
+            connection = ConnectionPool.getConnectionPool().getConnection();
+            statement = connection.prepareStatement(CREATE_FRIEND_LIST);
+            statement.setLong(1, friendList.getProfileId());
+            statement.setLong(2, friendList.getFriendProfileId());
+            statement.executeUpdate();
+        } catch (Exception e) {
+            LOGGER.error(e);
+        } finally {
+            assert statement != null;
+            statement.close();
+            ConnectionPool.getConnectionPool().releaseConnection(connection);
+        }
+    }
+
+    @Override
+    public FriendList getById(Long id) throws SQLException {
+        Connection connection = null;
+        PreparedStatement statement = null;
+        ResultSet resultSet;
+        FriendList friendList = null;
+        try {
+            connection = ConnectionPool.getConnectionPool().getConnection();
+            statement = connection.prepareStatement(GET_FRIEND_LIST_BY_ID);
+            statement.setLong(1, id);
+            resultSet = statement.executeQuery();
+            friendList = resultSetToEntity(resultSet);
+        } catch (Exception e) {
+            LOGGER.error(e);
+        } finally {
+            assert statement != null;
+            statement.close();
+            ConnectionPool.getConnectionPool().releaseConnection(connection);
+        }
+        return friendList;
+    }
+
+    @Override
+    public FriendList resultSetToEntity(ResultSet resultSet) {
+        FriendList friendList = new FriendList();
+        try {
+            friendList.setProfileId(resultSet.getLong("profile_id"));
+            friendList.setFriendProfileId(resultSet.getLong("friend_profile_id"));
         } catch (SQLException e) {
             LOGGER.error(e);
         }
-        return savedPost;
+        return friendList;
     }
 
     @Override
-    public void update(FriendList entity) {
-
+    public void update(FriendList entity) throws SQLException {
+        Connection connection = null;
+        PreparedStatement statement = null;
+        try {
+            connection = ConnectionPool.getConnectionPool().getConnection();
+            statement = connection.prepareStatement(UPDATE_FRIEND_LIST);
+            statement.setLong(1, entity.getFriendProfileId());
+            statement.executeUpdate();
+        } catch (Exception e) {
+            LOGGER.error(e);
+        } finally {
+            assert statement != null;
+            statement.close();
+            ConnectionPool.getConnectionPool().releaseConnection(connection);
+        }
     }
 
     @Override

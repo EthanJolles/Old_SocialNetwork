@@ -1,7 +1,9 @@
 package com.solvd.socialNetwork.dao.jdbcMySQLImpl;
 
 import com.solvd.socialNetwork.dao.ILikedPostDao;
+import com.solvd.socialNetwork.model.billing.State;
 import com.solvd.socialNetwork.model.userContent.LikedPost;
+import com.solvd.socialNetwork.model.userContent.Repost;
 import com.solvd.socialNetwork.model.userContent.SavedPost;
 import com.solvd.socialNetwork.utils.ConnectionPool;
 import org.apache.logging.log4j.LogManager;
@@ -19,30 +21,78 @@ public class LikedPostDaoImpl extends AbstractDao<LikedPost> implements ILikedPo
     private static final String GET_LIKED_POST_BY_ID = "Select * from liked_post where id=?";
     private static final String UPDATE_LIKED_POST = "Update liked_post set name = ? where id = ?";
     private static final String DELETE_LIKED_POST = "Delete from liked_post where id = ?";
-    @Override
-    public void create(LikedPost likedPost) {
-
-    }
 
     @Override
-    public LikedPost getById(Long id) {
-        return null;
-    }
-
-    public SavedPost resultSetToSavedPost(ResultSet resultSet) {
-        SavedPost savedPost = new SavedPost();
+    public void create(LikedPost likedPost) throws SQLException {
+        Connection connection = null;
+        PreparedStatement statement = null;
         try {
-            savedPost.setTitle(resultSet.getString("name"));
-            savedPost.setPostId(resultSet.getLong("post_id"));
+            connection = ConnectionPool.getConnectionPool().getConnection();
+            statement = connection.prepareStatement(CREATE_LIKED_POST);
+            statement.setString(1, likedPost.getName());
+            statement.setLong(2, likedPost.getPostId());
+            statement.executeUpdate();
+        } catch (Exception e) {
+            LOGGER.error(e);
+        } finally {
+            assert statement != null;
+            statement.close();
+            ConnectionPool.getConnectionPool().releaseConnection(connection);
+        }
+    }
+
+    @Override
+    public LikedPost getById(Long id) throws SQLException {
+        Connection connection = null;
+        PreparedStatement statement = null;
+        ResultSet resultSet;
+        LikedPost likedPost = null;
+
+        try {
+            connection = ConnectionPool.getConnectionPool().getConnection();
+            statement = connection.prepareStatement(GET_LIKED_POST_BY_ID);
+            statement.setLong(1, id);
+            resultSet = statement.executeQuery();
+            likedPost = resultSetToEntity(resultSet);
+        } catch (Exception e) {
+            LOGGER.error(e);
+        } finally {
+            assert statement != null;
+            statement.close();
+            ConnectionPool.getConnectionPool().releaseConnection(connection);
+        }
+        return likedPost;
+    }
+
+    @Override
+    public LikedPost resultSetToEntity(ResultSet resultSet) {
+        LikedPost likedPost = new LikedPost();
+        try {
+            likedPost.setName(resultSet.getString("name"));
+            likedPost.setPostId(resultSet.getLong("post_id"));
         } catch (SQLException e) {
             LOGGER.error(e);
         }
-        return savedPost;
+        return likedPost;
     }
 
     @Override
-    public void update(LikedPost entity) {
-
+    public void update(LikedPost entity) throws SQLException {
+        Connection connection = null;
+        PreparedStatement statement = null;
+        try {
+            connection = ConnectionPool.getConnectionPool().getConnection();
+            statement = connection.prepareStatement(UPDATE_LIKED_POST);
+            statement.setString(1, entity.getName());
+            statement.setLong(2, entity.getPostId());
+            statement.executeUpdate();
+        } catch (Exception e) {
+            LOGGER.error(e);
+        } finally {
+            assert statement != null;
+            statement.close();
+            ConnectionPool.getConnectionPool().releaseConnection(connection);
+        }
     }
 
     @Override

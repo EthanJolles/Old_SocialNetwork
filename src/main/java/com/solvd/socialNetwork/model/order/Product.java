@@ -26,7 +26,7 @@ public class Product {
     private Long sku;
 
     @XmlElement (name="modelNumber")
-    private Long modelNumber;
+    private String modelNumber;
 
     @XmlElement (name="isOutOfStock")
     private Boolean isOutOfStock;
@@ -35,7 +35,7 @@ public class Product {
     }
 
     public Product(String name, Double price, String desc,
-                   Date dateListed, Long sku, Long modelNumber, Boolean isOutOfStock) {
+                   Date dateListed, Long sku, String modelNumber, Boolean isOutOfStock) {
 
         this.name = name;
         this.price = price;
@@ -94,11 +94,11 @@ public class Product {
         this.sku = sku;
     }
 
-    public Long getModelNumber() {
+    public String getModelNumber() {
         return modelNumber;
     }
 
-    public void setModelNumber(Long modelNumber) {
+    public void setModelNumber(String modelNumber) {
         this.modelNumber = modelNumber;
     }
 

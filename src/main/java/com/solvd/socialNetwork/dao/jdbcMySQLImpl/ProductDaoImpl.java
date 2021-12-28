@@ -1,16 +1,15 @@
 package com.solvd.socialNetwork.dao.jdbcMySQLImpl;
 
 import com.solvd.socialNetwork.dao.IProductDao;
+import com.solvd.socialNetwork.model.billing.State;
 import com.solvd.socialNetwork.model.order.Product;
+import com.solvd.socialNetwork.model.profile.Profile;
 import com.solvd.socialNetwork.model.userContent.SavedPost;
 import com.solvd.socialNetwork.utils.ConnectionPool;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 
 public class ProductDaoImpl extends AbstractDao<Product> implements IProductDao {
 
@@ -21,30 +20,87 @@ public class ProductDaoImpl extends AbstractDao<Product> implements IProductDao 
     private static final String GET_PRODUCT_BY_ID = "Select * from product where id=?";
     private static final String UPDATE_PRODUCT_PRICE = "Update product set price = ? where id = ?";
     private static final String DELETE_PRODUCT = "Delete from product where id = ?";
-    @Override
-    public void create(Product product) {
-
-    }
 
     @Override
-    public Product getById(Long id) {
-        return null;
-    }
-
-    public SavedPost resultSetToSavedPost(ResultSet resultSet) {
-        SavedPost savedPost = new SavedPost();
+    public void create(Product product) throws SQLException {
+        Connection connection = null;
+        PreparedStatement statement = null;
         try {
-            savedPost.setTitle(resultSet.getString("name"));
-            savedPost.setPostId(resultSet.getLong("post_id"));
+            connection = ConnectionPool.getConnectionPool().getConnection();
+            statement = connection.prepareStatement(CREATE_PRODUCT);
+            statement.setString(1, product.getName());
+            statement.setDouble(2, product.getPrice());
+            statement.setString(3, product.getDesc());
+            statement.setDate(4, (Date) product.getDateListed());
+            statement.setBoolean(5, product.getOutOfStock());
+            statement.setLong(6, product.getSku());
+            statement.setString(7, product.getModelNumber());
+            statement.executeUpdate();
+        } catch (Exception e) {
+            LOGGER.error(e);
+        } finally {
+            assert statement != null;
+            statement.close();
+            ConnectionPool.getConnectionPool().releaseConnection(connection);
+        }
+    }
+
+    @Override
+    public Product getById(Long id) throws SQLException {
+        Connection connection = null;
+        PreparedStatement statement = null;
+        ResultSet resultSet;
+        Product product = null;
+
+        try {
+            connection = ConnectionPool.getConnectionPool().getConnection();
+            statement = connection.prepareStatement(GET_PRODUCT_BY_ID);
+            statement.setLong(1, id);
+            resultSet = statement.executeQuery();
+            product = resultSetToEntity(resultSet);
+        } catch (Exception e) {
+            LOGGER.error(e);
+        } finally {
+            assert statement != null;
+            statement.close();
+            ConnectionPool.getConnectionPool().releaseConnection(connection);
+        }
+        return product;
+    }
+
+    @Override
+    public Product resultSetToEntity(ResultSet resultSet) {
+        Product product = new Product();
+        try {
+            product.setName(resultSet.getString("name"));
+            product.setPrice(resultSet.getDouble("price"));
+            product.setDesc(resultSet.getString("desc"));
+            product.setDateListed(resultSet.getDate("date_listed"));
+            product.setOutOfStock(resultSet.getBoolean("is_out_of_stock"));
+            product.setSku(resultSet.getLong("sku"));
+            product.setModelNumber(resultSet.getString("model_number"));
         } catch (SQLException e) {
             LOGGER.error(e);
         }
-        return savedPost;
+        return product;
     }
 
     @Override
-    public void update(Product entity) {
-
+    public void update(Product entity) throws SQLException {
+        Connection connection = null;
+        PreparedStatement statement = null;
+        try {
+            connection = ConnectionPool.getConnectionPool().getConnection();
+            statement = connection.prepareStatement(UPDATE_PRODUCT_PRICE);
+            statement.setDouble(1, entity.getPrice());
+            statement.executeUpdate();
+        } catch (Exception e) {
+            LOGGER.error(e);
+        } finally {
+            assert statement != null;
+            statement.close();
+            ConnectionPool.getConnectionPool().releaseConnection(connection);
+        }
     }
 
     @Override

@@ -1,8 +1,10 @@
 package com.solvd.socialNetwork.dao.jdbcMySQLImpl;
 
 import com.solvd.socialNetwork.dao.IBlockedListDao;
+import com.solvd.socialNetwork.model.billing.State;
 import com.solvd.socialNetwork.model.userContent.SavedPost;
 import com.solvd.socialNetwork.model.userLists.BlockedList;
+import com.solvd.socialNetwork.model.userLists.FriendList;
 import com.solvd.socialNetwork.utils.ConnectionPool;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -18,32 +20,78 @@ public class BlockedListDaoImpl extends AbstractDao<BlockedList> implements IBlo
     private static final String CREATE_BLOCKED_LIST = "Insert into blocked_list (profile_id, " +
             "blocked_profile_id) VALUES (?, ?)";
     private static final String GET_BLOCKED_LIST_BY_ID = "Select * from blocked_list where id=?";
-    private static final String UPDATE_BLOCKED_LIST = "Update user set blocked_profile_id = ? where id = ?";
+    private static final String UPDATE_BLOCKED_LIST = "Update blocked_list set blocked_profile_id = ? where id = ?";
     private static final String DELETE_BLOCKED_LIST = "Delete from blocked_list where id = ?";
-    @Override
-    public void create(BlockedList blockedList) {
-
-    }
 
     @Override
-    public BlockedList getById(Long id) {
-        return null;
-    }
-
-    public SavedPost resultSetToSavedPost(ResultSet resultSet) {
-        SavedPost savedPost = new SavedPost();
+    public void create(BlockedList blockedList) throws SQLException {
+        Connection connection = null;
+        PreparedStatement statement = null;
         try {
-            savedPost.setTitle(resultSet.getString("name"));
-            savedPost.setPostId(resultSet.getLong("post_id"));
+            connection = ConnectionPool.getConnectionPool().getConnection();
+            statement = connection.prepareStatement(CREATE_BLOCKED_LIST);
+            statement.setLong(1, blockedList.getProfileId());
+            statement.setLong(2, blockedList.getBlockedProfileId());
+            statement.executeUpdate();
+        } catch (Exception e) {
+            LOGGER.error(e);
+        } finally {
+            assert statement != null;
+            statement.close();
+            ConnectionPool.getConnectionPool().releaseConnection(connection);
+        }
+    }
+
+    @Override
+    public BlockedList getById(Long id) throws SQLException {
+        Connection connection = null;
+        PreparedStatement statement = null;
+        ResultSet resultSet;
+        BlockedList blockedList = null;
+        try {
+            connection = ConnectionPool.getConnectionPool().getConnection();
+            statement = connection.prepareStatement(GET_BLOCKED_LIST_BY_ID);
+            statement.setLong(1, id);
+            resultSet = statement.executeQuery();
+            blockedList = resultSetToEntity(resultSet);
+        } catch (Exception e) {
+            LOGGER.error(e);
+        } finally {
+            assert statement != null;
+            statement.close();
+            ConnectionPool.getConnectionPool().releaseConnection(connection);
+        }
+        return blockedList;
+    }
+
+    @Override
+    public BlockedList resultSetToEntity(ResultSet resultSet) {
+        BlockedList blockedList = new BlockedList();
+        try {
+            blockedList.setProfileId(resultSet.getLong("profile_id"));
+            blockedList.setBlockedProfileId(resultSet.getLong("blocked_profile_id"));
         } catch (SQLException e) {
             LOGGER.error(e);
         }
-        return savedPost;
+        return blockedList;
     }
 
     @Override
-    public void update(BlockedList entity) {
-
+    public void update(BlockedList entity) throws SQLException {
+        Connection connection = null;
+        PreparedStatement statement = null;
+        try {
+            connection = ConnectionPool.getConnectionPool().getConnection();
+            statement = connection.prepareStatement(UPDATE_BLOCKED_LIST);
+            statement.setLong(1, entity.getBlockedProfileId());
+            statement.executeUpdate();
+        } catch (Exception e) {
+            LOGGER.error(e);
+        } finally {
+            assert statement != null;
+            statement.close();
+            ConnectionPool.getConnectionPool().releaseConnection(connection);
+        }
     }
 
     @Override

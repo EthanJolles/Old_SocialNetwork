@@ -1,7 +1,7 @@
 package com.solvd.socialNetwork.dao.jdbcMySQLImpl;
 
 import com.solvd.socialNetwork.dao.ISavedPostDao;
-import com.solvd.socialNetwork.model.user.User;
+import com.solvd.socialNetwork.model.billing.State;
 import com.solvd.socialNetwork.model.userContent.SavedPost;
 import com.solvd.socialNetwork.utils.ConnectionPool;
 import org.apache.logging.log4j.LogManager;
@@ -26,7 +26,7 @@ public class SavedPostDaoImpl extends AbstractDao<SavedPost> implements ISavedPo
         try {
             connection = ConnectionPool.getConnectionPool().getConnection();
             statement = connection.prepareStatement(CREATE_SAVED_POST);
-            statement.setString(1, savedPost.getTitle());
+            statement.setString(1, savedPost.getName());
             statement.setLong(2, savedPost.getPostId());
             statement.executeUpdate();
         } catch (Exception e) {
@@ -50,7 +50,7 @@ public class SavedPostDaoImpl extends AbstractDao<SavedPost> implements ISavedPo
             statement = connection.prepareStatement(GET_SAVED_POST_BY_ID);
             statement.setLong(1, id);
             resultSet = statement.executeQuery();
-            savedPost = resultSetToSavedPost(resultSet);
+            savedPost = resultSetToEntity(resultSet);
         } catch (Exception e) {
             LOGGER.error(e);
         } finally {
@@ -61,10 +61,11 @@ public class SavedPostDaoImpl extends AbstractDao<SavedPost> implements ISavedPo
         return savedPost;
     }
 
-    public SavedPost resultSetToSavedPost(ResultSet resultSet) {
+    @Override
+    public SavedPost resultSetToEntity(ResultSet resultSet) {
         SavedPost savedPost = new SavedPost();
         try {
-            savedPost.setTitle(resultSet.getString("name"));
+            savedPost.setName(resultSet.getString("name"));
             savedPost.setPostId(resultSet.getLong("post_id"));
         } catch (SQLException e) {
             LOGGER.error(e);
@@ -79,7 +80,7 @@ public class SavedPostDaoImpl extends AbstractDao<SavedPost> implements ISavedPo
         try {
             connection = ConnectionPool.getConnectionPool().getConnection();
             statement = connection.prepareStatement(UPDATE_SAVED_POST);
-            statement.setString(1, entity.getTitle());
+            statement.setString(1, entity.getName());
             statement.setLong(2, entity.getPostId());
             statement.executeUpdate();
         } catch (Exception e) {

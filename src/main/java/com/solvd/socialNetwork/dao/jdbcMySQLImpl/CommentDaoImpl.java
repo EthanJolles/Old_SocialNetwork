@@ -1,6 +1,8 @@
 package com.solvd.socialNetwork.dao.jdbcMySQLImpl;
 
 import com.solvd.socialNetwork.dao.ICommentDao;
+import com.solvd.socialNetwork.model.billing.Country;
+import com.solvd.socialNetwork.model.billing.State;
 import com.solvd.socialNetwork.model.userContent.Comment;
 import com.solvd.socialNetwork.model.userContent.SavedPost;
 import com.solvd.socialNetwork.utils.ConnectionPool;
@@ -19,30 +21,76 @@ public class CommentDaoImpl extends AbstractDao<Comment> implements ICommentDao 
     private static final String GET_COMMENT_BY_ID = "Select * from comment where id=?";
     private static final String UPDATE_COMMENT = "Update comment set contents = ? where id = ?";
     private static final String DELETE_COMMENT = "Delete from comment where id = ?";
-    @Override
-    public void create(Comment comment) {
-
-    }
 
     @Override
-    public Comment getById(Long id) {
-        return null;
-    }
-
-    public SavedPost resultSetToSavedPost(ResultSet resultSet) {
-        SavedPost savedPost = new SavedPost();
+    public void create(Comment comment) throws SQLException {
+        Connection connection = null;
+        PreparedStatement statement = null;
         try {
-            savedPost.setTitle(resultSet.getString("name"));
-            savedPost.setPostId(resultSet.getLong("post_id"));
+            connection = ConnectionPool.getConnectionPool().getConnection();
+            statement = connection.prepareStatement(CREATE_COMMENT);
+            statement.setString(1, comment.getContents());
+            statement.setLong(2, comment.getPostId());
+            statement.executeUpdate();
+        } catch (Exception e) {
+            LOGGER.error(e);
+        } finally {
+            assert statement != null;
+            statement.close();
+            ConnectionPool.getConnectionPool().releaseConnection(connection);
+        }
+    }
+
+    @Override
+    public Comment getById(Long id) throws SQLException {
+        Connection connection = null;
+        PreparedStatement statement = null;
+        ResultSet resultSet;
+        Comment comment = null;
+        try {
+            connection = ConnectionPool.getConnectionPool().getConnection();
+            statement = connection.prepareStatement(GET_COMMENT_BY_ID);
+            statement.setLong(1, id);
+            resultSet = statement.executeQuery();
+            comment = resultSetToEntity(resultSet);
+        } catch (Exception e) {
+            LOGGER.error(e);
+        } finally {
+            assert statement != null;
+            statement.close();
+            ConnectionPool.getConnectionPool().releaseConnection(connection);
+        }
+        return comment;
+    }
+
+    @Override
+    public Comment resultSetToEntity(ResultSet resultSet) {
+        Comment comment = new Comment();
+        try {
+            comment.setContents(resultSet.getString("contents"));
+            comment.setPostId(resultSet.getLong("post_id"));
         } catch (SQLException e) {
             LOGGER.error(e);
         }
-        return savedPost;
+        return comment;
     }
 
     @Override
-    public void update(Comment entity) {
-
+    public void update(Comment entity) throws SQLException {
+        Connection connection = null;
+        PreparedStatement statement = null;
+        try {
+            connection = ConnectionPool.getConnectionPool().getConnection();
+            statement = connection.prepareStatement(UPDATE_COMMENT);
+            statement.setString(1, entity.getContents());
+            statement.executeUpdate();
+        } catch (Exception e) {
+            LOGGER.error(e);
+        } finally {
+            assert statement != null;
+            statement.close();
+            ConnectionPool.getConnectionPool().releaseConnection(connection);
+        }
     }
 
     @Override

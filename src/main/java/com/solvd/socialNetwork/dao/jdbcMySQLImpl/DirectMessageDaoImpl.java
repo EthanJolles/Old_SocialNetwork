@@ -2,15 +2,11 @@ package com.solvd.socialNetwork.dao.jdbcMySQLImpl;
 
 import com.solvd.socialNetwork.dao.IDirectMessageDao;
 import com.solvd.socialNetwork.model.user.DirectMessage;
-import com.solvd.socialNetwork.model.userContent.SavedPost;
 import com.solvd.socialNetwork.utils.ConnectionPool;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 
 public class DirectMessageDaoImpl extends AbstractDao<DirectMessage> implements IDirectMessageDao {
 
@@ -23,28 +19,77 @@ public class DirectMessageDaoImpl extends AbstractDao<DirectMessage> implements 
 
     @Override
     public void create(DirectMessage directMessage) throws SQLException {
-
+        Connection connection = null;
+        PreparedStatement statement = null;
+        try {
+            connection = ConnectionPool.getConnectionPool().getConnection();
+            statement = connection.prepareStatement(CREATE_DIRECT_MESSAGE);
+            statement.setString(1, directMessage.getMessage());
+            statement.setLong(2, directMessage.getUserId());
+            statement.setLong(3, directMessage.getRecipientId());
+            statement.setDate(4, (Date) directMessage.getDateSent());
+            statement.executeUpdate();
+        } catch (Exception e) {
+            LOGGER.error(e);
+        } finally {
+            assert statement != null;
+            statement.close();
+            ConnectionPool.getConnectionPool().releaseConnection(connection);
+        }
     }
 
     @Override
     public DirectMessage getById(Long id) throws SQLException {
-        return null;
+        Connection connection = null;
+        PreparedStatement statement = null;
+        ResultSet resultSet;
+        DirectMessage directMessage = null;
+        try {
+            connection = ConnectionPool.getConnectionPool().getConnection();
+            statement = connection.prepareStatement(GET_DIRECT_MESSAGE_BY_ID);
+            statement.setLong(1, id);
+            resultSet = statement.executeQuery();
+            directMessage = resultSetToEntity(resultSet);
+        } catch (Exception e) {
+            LOGGER.error(e);
+        } finally {
+            assert statement != null;
+            statement.close();
+            ConnectionPool.getConnectionPool().releaseConnection(connection);
+        }
+        return directMessage;
     }
 
-    public SavedPost resultSetToSavedPost(ResultSet resultSet) {
-        SavedPost savedPost = new SavedPost();
+    @Override
+    public DirectMessage resultSetToEntity(ResultSet resultSet) {
+        DirectMessage directMessage = new DirectMessage();
         try {
-            savedPost.setTitle(resultSet.getString("name"));
-            savedPost.setPostId(resultSet.getLong("post_id"));
+            directMessage.setMessage(resultSet.getString("message"));
+            directMessage.setUserId(resultSet.getLong("user_id"));
+            directMessage.setRecipientId(resultSet.getLong("recipient_id"));
+            directMessage.setDateSent(resultSet.getDate("user_id"));
         } catch (SQLException e) {
             LOGGER.error(e);
         }
-        return savedPost;
+        return directMessage;
     }
 
     @Override
     public void update(DirectMessage entity) throws SQLException {
-
+        Connection connection = null;
+        PreparedStatement statement = null;
+        try {
+            connection = ConnectionPool.getConnectionPool().getConnection();
+            statement = connection.prepareStatement(UPDATE_DIRECT_MESSAGE);
+            statement.setString(1, entity.getMessage());
+            statement.executeUpdate();
+        } catch (Exception e) {
+            LOGGER.error(e);
+        } finally {
+            assert statement != null;
+            statement.close();
+            ConnectionPool.getConnectionPool().releaseConnection(connection);
+        }
     }
 
     @Override

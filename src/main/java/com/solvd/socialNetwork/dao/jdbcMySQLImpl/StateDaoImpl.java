@@ -48,7 +48,7 @@ public class StateDaoImpl extends AbstractDao<State> implements IStateDao {
             statement = connection.prepareStatement(GET_STATE_BY_ID);
             statement.setLong(1, id);
             resultSet = statement.executeQuery();
-            state = resultSetToState(resultSet);
+            state = resultSetToEntity(resultSet);
         } catch (Exception e) {
             LOGGER.error(e);
         } finally {
@@ -59,10 +59,12 @@ public class StateDaoImpl extends AbstractDao<State> implements IStateDao {
         return state;
     }
 
-    public State resultSetToState(ResultSet resultSet) {
+    @Override
+    public State resultSetToEntity(ResultSet resultSet) {
         State state = new State();
         try {
             state.setId(resultSet.getLong("id"));
+            state.setState(resultSet.getString("country_id"));
         } catch (SQLException e) {
             LOGGER.error(e);
         }

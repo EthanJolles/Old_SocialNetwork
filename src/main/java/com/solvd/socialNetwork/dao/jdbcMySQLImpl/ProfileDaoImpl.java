@@ -1,9 +1,8 @@
 package com.solvd.socialNetwork.dao.jdbcMySQLImpl;
 
 import com.solvd.socialNetwork.dao.IProfileDao;
+import com.solvd.socialNetwork.model.billing.State;
 import com.solvd.socialNetwork.model.profile.Profile;
-import com.solvd.socialNetwork.model.user.User;
-import com.solvd.socialNetwork.model.userContent.SavedPost;
 import com.solvd.socialNetwork.utils.ConnectionPool;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -19,6 +18,7 @@ public class ProfileDaoImpl extends AbstractDao<Profile> implements IProfileDao 
     private static final String UPDATE_PROFILE = "Update profile set first_name = ?, last_name = ?, middle_initial = ?" +
             ",bio = ?, is_verified = ?, birthday = ?, age = ?, user_id = ? where id = ?";
     private static final String DELETE_PROFILE = "Delete from profile where id = ?";
+
     @Override
     public void create(Profile profile) throws SQLException {
         Connection connection = null;
@@ -56,7 +56,7 @@ public class ProfileDaoImpl extends AbstractDao<Profile> implements IProfileDao 
             statement = connection.prepareStatement(GET_PROFILE_BY_ID);
             statement.setLong(1, id);
             resultSet = statement.executeQuery();
-            profile = resultSetToProfile(resultSet);
+            profile = resultSetToEntity(resultSet);
         } catch (Exception e) {
             LOGGER.error(e);
         } finally {
@@ -67,7 +67,8 @@ public class ProfileDaoImpl extends AbstractDao<Profile> implements IProfileDao 
         return profile;
     }
 
-    public Profile resultSetToProfile(ResultSet resultSet) {
+    @Override
+    public Profile resultSetToEntity(ResultSet resultSet) {
         Profile profile = new Profile();
         try {
             profile.setFirstName(resultSet.getString("first_name"));

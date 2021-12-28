@@ -1,6 +1,7 @@
 package com.solvd.socialNetwork.dao.jdbcMySQLImpl;
 
 import com.solvd.socialNetwork.dao.IRepostDao;
+import com.solvd.socialNetwork.model.billing.State;
 import com.solvd.socialNetwork.model.userContent.Repost;
 import com.solvd.socialNetwork.model.userContent.SavedPost;
 import com.solvd.socialNetwork.utils.ConnectionPool;
@@ -27,7 +28,7 @@ public class RepostDaoImpl extends AbstractDao<Repost> implements IRepostDao {
         try {
             connection = ConnectionPool.getConnectionPool().getConnection();
             statement = connection.prepareStatement(CREATE_REPOST);
-            statement.setString(1, repost.getTitle());
+            statement.setString(1, repost.getName());
             statement.setLong(2, repost.getPostId());
             statement.executeUpdate();
         } catch (Exception e) {
@@ -40,15 +41,33 @@ public class RepostDaoImpl extends AbstractDao<Repost> implements IRepostDao {
     }
 
     @Override
-    public Repost getById(Long id) {
-        return null;
+    public Repost getById(Long id) throws SQLException {
+        Connection connection = null;
+        PreparedStatement statement = null;
+        ResultSet resultSet;
+        Repost repost = null;
+
+        try {
+            connection = ConnectionPool.getConnectionPool().getConnection();
+            statement = connection.prepareStatement(GET_REPOST_BY_ID);
+            statement.setLong(1, id);
+            resultSet = statement.executeQuery();
+            repost = resultSetToEntity(resultSet);
+        } catch (Exception e) {
+            LOGGER.error(e);
+        } finally {
+            assert statement != null;
+            statement.close();
+            ConnectionPool.getConnectionPool().releaseConnection(connection);
+        }
+        return repost;
     }
 
-
-    public Repost resultSetToRepost(ResultSet resultSet) {
+    @Override
+    public Repost resultSetToEntity(ResultSet resultSet) {
         Repost repost = new Repost();
         try {
-            repost.setTitle(resultSet.getString("name"));
+            repost.setName(resultSet.getString("name"));
             repost.setPostId(resultSet.getLong("post_id"));
         } catch (SQLException e) {
             LOGGER.error(e);
@@ -63,7 +82,7 @@ public class RepostDaoImpl extends AbstractDao<Repost> implements IRepostDao {
         try {
             connection = ConnectionPool.getConnectionPool().getConnection();
             statement = connection.prepareStatement(UPDATE_REPOST);
-            statement.setString(1, entity.getTitle());
+            statement.setString(1, entity.getName());
             statement.setLong(2, entity.getPostId());
             statement.executeUpdate();
         } catch (Exception e) {

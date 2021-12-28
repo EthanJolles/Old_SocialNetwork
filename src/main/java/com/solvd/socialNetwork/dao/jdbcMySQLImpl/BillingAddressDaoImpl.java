@@ -2,7 +2,9 @@ package com.solvd.socialNetwork.dao.jdbcMySQLImpl;
 
 import com.solvd.socialNetwork.model.billing.BillingAddress;
 import com.solvd.socialNetwork.dao.IBillingAddressDao;
+import com.solvd.socialNetwork.model.billing.State;
 import com.solvd.socialNetwork.model.userContent.SavedPost;
+import com.solvd.socialNetwork.model.userLists.BlockedList;
 import com.solvd.socialNetwork.utils.ConnectionPool;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -20,25 +22,62 @@ public class BillingAddressDaoImpl extends AbstractDao<BillingAddress> implement
     private static final String UPDATE_BILLING_ADDRESS = "Update billing_address set user_id =?, zip =?, street =?" +
             ",city_id =? where id = ?";
     private static final String DELETE_BILLING_ADDRESS = "Delete from billing_address where id = ?";
-    @Override
-    public void create(BillingAddress billingAddress) {
-
-    }
 
     @Override
-    public BillingAddress getById(Long id) {
-        return null;
-    }
-
-    public SavedPost resultSetToSavedPost(ResultSet resultSet) {
-        SavedPost savedPost = new SavedPost();
+    public void create(BillingAddress billingAddress) throws SQLException {
+        Connection connection = null;
+        PreparedStatement statement = null;
         try {
-            savedPost.setTitle(resultSet.getString("name"));
-            savedPost.setPostId(resultSet.getLong("post_id"));
+            connection = ConnectionPool.getConnectionPool().getConnection();
+            statement = connection.prepareStatement(CREATE_BILLING_ADDRESS);
+            statement.setLong(1, billingAddress.getUserId());
+            statement.setLong(2, billingAddress.getZip());
+            statement.setString(3, billingAddress.getStreet());
+            statement.setLong(4, billingAddress.getCityId());
+            statement.executeUpdate();
+        } catch (Exception e) {
+            LOGGER.error(e);
+        } finally {
+            assert statement != null;
+            statement.close();
+            ConnectionPool.getConnectionPool().releaseConnection(connection);
+        }
+    }
+
+    @Override
+    public BillingAddress getById(Long id) throws SQLException {
+        Connection connection = null;
+        PreparedStatement statement = null;
+        ResultSet resultSet;
+        BillingAddress billingAddress = null;
+        try {
+            connection = ConnectionPool.getConnectionPool().getConnection();
+            statement = connection.prepareStatement(GET_BILLING_ADDRESS_BY_ID);
+            statement.setLong(1, id);
+            resultSet = statement.executeQuery();
+            billingAddress = resultSetToEntity(resultSet);
+        } catch (Exception e) {
+            LOGGER.error(e);
+        } finally {
+            assert statement != null;
+            statement.close();
+            ConnectionPool.getConnectionPool().releaseConnection(connection);
+        }
+        return billingAddress;
+    }
+
+    @Override
+    public BillingAddress resultSetToEntity(ResultSet resultSet) {
+        BillingAddress billingAddress = new BillingAddress();
+        try {
+            billingAddress.setUserId(resultSet.getLong("profile_id"));
+            billingAddress.setZip(resultSet.getInt("zip"));
+            billingAddress.setStreet(resultSet.getString("street"));
+            billingAddress.setCityId(resultSet.getLong("city_id"));
         } catch (SQLException e) {
             LOGGER.error(e);
         }
-        return savedPost;
+        return billingAddress;
     }
 
     @Override

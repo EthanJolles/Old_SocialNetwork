@@ -50,7 +50,7 @@ public class UserDaoImpl extends AbstractDao<User> implements IUserDao {
             statement = connection.prepareStatement(GET_USER_BY_ID);
             statement.setLong(1, id);
             resultSet = statement.executeQuery();
-            user = resultSetToUser(resultSet);
+            user = resultSetToEntity(resultSet);
         } catch (Exception e) {
             LOGGER.error(e);
         } finally {
@@ -61,7 +61,8 @@ public class UserDaoImpl extends AbstractDao<User> implements IUserDao {
         return user;
     }
 
-    public User resultSetToUser(ResultSet resultSet) {
+    @Override
+    public User resultSetToEntity(ResultSet resultSet) {
         User user = new User();
         try {
             user.setUsername(resultSet.getString("first_name"));

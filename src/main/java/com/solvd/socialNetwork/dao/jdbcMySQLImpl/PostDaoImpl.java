@@ -1,16 +1,15 @@
 package com.solvd.socialNetwork.dao.jdbcMySQLImpl;
 
 import com.solvd.socialNetwork.dao.IPostDao;
+import com.solvd.socialNetwork.model.billing.State;
+import com.solvd.socialNetwork.model.profile.Profile;
 import com.solvd.socialNetwork.model.userContent.Post;
 import com.solvd.socialNetwork.model.userContent.SavedPost;
 import com.solvd.socialNetwork.utils.ConnectionPool;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 
 public class PostDaoImpl extends AbstractDao<Post> implements IPostDao {
 
@@ -20,30 +19,80 @@ public class PostDaoImpl extends AbstractDao<Post> implements IPostDao {
     private static final String GET_POST_BY_ID = "Select * from post where id=?";
     private static final String UPDATE_POST = "Update post set caption = ? where id = ?";
     private static final String DELETE_POST = "Delete from post where id = ?";
-    @Override
-    public void create(Post post) {
-
-    }
 
     @Override
-    public Post getById(Long id) {
-        return null;
-    }
-
-    public SavedPost resultSetToSavedPost(ResultSet resultSet) {
-        SavedPost savedPost = new SavedPost();
+    public void create(Post post) throws SQLException {
+        Connection connection = null;
+        PreparedStatement statement = null;
         try {
-            savedPost.setTitle(resultSet.getString("name"));
-            savedPost.setPostId(resultSet.getLong("post_id"));
+            connection = ConnectionPool.getConnectionPool().getConnection();
+            statement = connection.prepareStatement(CREATE_POST);
+            statement.setString(1, post.getLocation());
+            statement.setString(2, post.getCaption());
+            statement.setBoolean(3, post.getPicture());
+            statement.setLong(4, post.getUserId());
+            statement.executeUpdate();
+        } catch (Exception e) {
+            LOGGER.error(e);
+        } finally {
+            assert statement != null;
+            statement.close();
+            ConnectionPool.getConnectionPool().releaseConnection(connection);
+        }
+    }
+
+    @Override
+    public Post getById(Long id) throws SQLException {
+        Connection connection = null;
+        PreparedStatement statement = null;
+        ResultSet resultSet;
+        Post post = null;
+        try {
+            connection = ConnectionPool.getConnectionPool().getConnection();
+            statement = connection.prepareStatement(GET_POST_BY_ID);
+            statement.setLong(1, id);
+            resultSet = statement.executeQuery();
+            post = resultSetToEntity(resultSet);
+        } catch (Exception e) {
+            LOGGER.error(e);
+        } finally {
+            assert statement != null;
+            statement.close();
+            ConnectionPool.getConnectionPool().releaseConnection(connection);
+        }
+        return post;
+    }
+
+    @Override
+    public Post resultSetToEntity(ResultSet resultSet) {
+        Post post = new Post();
+        try {
+            post.setLocation(resultSet.getString("location"));
+            post.setCaption(resultSet.getString("caption"));
+            post.setPicture(resultSet.getBoolean("is_picture"));
+            post.setUserId(resultSet.getLong("user_id"));
         } catch (SQLException e) {
             LOGGER.error(e);
         }
-        return savedPost;
+        return post;
     }
 
     @Override
-    public void update(Post entity) {
-
+    public void update(Post entity) throws SQLException {
+        Connection connection = null;
+        PreparedStatement statement = null;
+        try {
+            connection = ConnectionPool.getConnectionPool().getConnection();
+            statement = connection.prepareStatement(UPDATE_POST);
+            statement.setString(1, entity.getCaption());
+            statement.executeUpdate();
+        } catch (Exception e) {
+            LOGGER.error(e);
+        } finally {
+            assert statement != null;
+            statement.close();
+            ConnectionPool.getConnectionPool().releaseConnection(connection);
+        }
     }
 
     @Override

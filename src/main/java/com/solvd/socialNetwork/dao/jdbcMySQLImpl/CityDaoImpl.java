@@ -2,6 +2,8 @@ package com.solvd.socialNetwork.dao.jdbcMySQLImpl;
 
 import com.solvd.socialNetwork.model.billing.City;
 import com.solvd.socialNetwork.dao.ICityDao;
+import com.solvd.socialNetwork.model.billing.State;
+import com.solvd.socialNetwork.model.userContent.Comment;
 import com.solvd.socialNetwork.model.userContent.SavedPost;
 import com.solvd.socialNetwork.utils.ConnectionPool;
 import org.apache.logging.log4j.LogManager;
@@ -19,30 +21,77 @@ public class CityDaoImpl extends AbstractDao<City> implements ICityDao {
     private static final String GET_CITY_BY_ID = "Select * from city where id=?";
     private static final String UPDATE_CITY = "Update city set city = ? where id = ?";
     private static final String DELETE_CITY = "Delete from city where id = ?";
-    @Override
-    public void create(City city) {
-
-    }
 
     @Override
-    public City getById(Long id) {
-        return null;
-    }
-
-    public SavedPost resultSetToSavedPost(ResultSet resultSet) {
-        SavedPost savedPost = new SavedPost();
+    public void create(City city) throws SQLException {
+        Connection connection = null;
+        PreparedStatement statement = null;
         try {
-            savedPost.setTitle(resultSet.getString("name"));
-            savedPost.setPostId(resultSet.getLong("post_id"));
+            connection = ConnectionPool.getConnectionPool().getConnection();
+            statement = connection.prepareStatement(CREATE_CITY);
+            statement.setString(1, city.getCity());
+            statement.setLong(2, city.getStateId());
+            statement.executeUpdate();
+        } catch (Exception e) {
+            LOGGER.error(e);
+        } finally {
+            assert statement != null;
+            statement.close();
+            ConnectionPool.getConnectionPool().releaseConnection(connection);
+        }
+    }
+
+    @Override
+    public City getById(Long id) throws SQLException {
+        Connection connection = null;
+        PreparedStatement statement = null;
+        ResultSet resultSet;
+        City city = null;
+        try {
+            connection = ConnectionPool.getConnectionPool().getConnection();
+            statement = connection.prepareStatement(GET_CITY_BY_ID);
+            statement.setLong(1, id);
+            resultSet = statement.executeQuery();
+            city = resultSetToEntity(resultSet);
+        } catch (Exception e) {
+            LOGGER.error(e);
+        } finally {
+            assert statement != null;
+            statement.close();
+            ConnectionPool.getConnectionPool().releaseConnection(connection);
+        }
+        return city;
+    }
+
+    @Override
+    public City resultSetToEntity(ResultSet resultSet) {
+        City city = new City();
+        try {
+            city.setCity(resultSet.getString("city"));
+            city.setStateId(resultSet.getLong("state_id"));
         } catch (SQLException e) {
             LOGGER.error(e);
         }
-        return savedPost;
+        return city;
     }
 
     @Override
-    public void update(City entity) {
-
+    public void update(City entity) throws SQLException {
+        Connection connection = null;
+        PreparedStatement statement = null;
+        try {
+            connection = ConnectionPool.getConnectionPool().getConnection();
+            statement = connection.prepareStatement(UPDATE_CITY);
+            statement.setString(1, entity.getCity());
+            statement.setLong(2,entity.getStateId());
+            statement.executeUpdate();
+        } catch (Exception e) {
+            LOGGER.error(e);
+        } finally {
+            assert statement != null;
+            statement.close();
+            ConnectionPool.getConnectionPool().releaseConnection(connection);
+        }
     }
 
     @Override

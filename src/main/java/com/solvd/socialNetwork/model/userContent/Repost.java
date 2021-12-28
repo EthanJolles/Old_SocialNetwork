@@ -3,14 +3,14 @@ package com.solvd.socialNetwork.model.userContent;
 public class Repost {
 
     private Long id;
-    private String title;
+    private String name;
     private Long postId;
 
     public Repost() {
     }
 
     public Repost(String title, Long postId) {
-        this.title = title;
+        this.name = title;
         this.postId = postId;
     }
 
@@ -22,12 +22,12 @@ public class Repost {
         this.id = id;
     }
 
-    public String getTitle() {
-        return title;
+    public String getName() {
+        return name;
     }
 
-    public void setTitle(String title) {
-        this.title = title;
+    public void setName(String name) {
+        this.name = name;
     }
 
     public Long getPostId() {
