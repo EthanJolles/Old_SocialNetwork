@@ -1,10 +1,8 @@
-package com.solvd.socialNetwork.dao.jdbcMySQLImpl;
+package com.solvd.socialNetwork.dao.jdbcMySQLImpl.userContent;
 
-import com.solvd.socialNetwork.model.billing.City;
-import com.solvd.socialNetwork.dao.ICityDao;
-import com.solvd.socialNetwork.model.billing.State;
+import com.solvd.socialNetwork.dao.ICommentDao;
+import com.solvd.socialNetwork.dao.jdbcMySQLImpl.AbstractDao;
 import com.solvd.socialNetwork.model.userContent.Comment;
-import com.solvd.socialNetwork.model.userContent.SavedPost;
 import com.solvd.socialNetwork.utils.ConnectionPool;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -14,23 +12,23 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-public class CityDaoImpl extends AbstractDao<City> implements ICityDao {
+public class CommentDaoImpl extends AbstractDao<Comment> implements ICommentDao {
 
-    private static final Logger LOGGER = LogManager.getLogger(CityDaoImpl.class);
-    private static final String CREATE_CITY = "Insert into city (city, state_id) VALUES (?, ?)";
-    private static final String GET_CITY_BY_ID = "Select * from city where id=?";
-    private static final String UPDATE_CITY = "Update city set city = ? where id = ?";
-    private static final String DELETE_CITY = "Delete from city where id = ?";
+    private static final Logger LOGGER = LogManager.getLogger(CommentDaoImpl.class);
+    private static final String CREATE_COMMENT = "Insert into comment (contents, post_id) VALUES (?, ?)";
+    private static final String GET_COMMENT_BY_ID = "Select * from comment where id=?";
+    private static final String UPDATE_COMMENT = "Update comment set contents = ? where id = ?";
+    private static final String DELETE_COMMENT = "Delete from comment where id = ?";
 
     @Override
-    public void create(City city) throws SQLException {
+    public void create(Comment comment) throws SQLException {
         Connection connection = null;
         PreparedStatement statement = null;
         try {
             connection = ConnectionPool.getConnectionPool().getConnection();
-            statement = connection.prepareStatement(CREATE_CITY);
-            statement.setString(1, city.getCity());
-            statement.setLong(2, city.getStateId());
+            statement = connection.prepareStatement(CREATE_COMMENT);
+            statement.setString(1, comment.getContents());
+            statement.setLong(2, comment.getPostId());
             statement.executeUpdate();
         } catch (Exception e) {
             LOGGER.error(e);
@@ -42,17 +40,17 @@ public class CityDaoImpl extends AbstractDao<City> implements ICityDao {
     }
 
     @Override
-    public City getById(Long id) throws SQLException {
+    public Comment getById(Long id) throws SQLException {
         Connection connection = null;
         PreparedStatement statement = null;
         ResultSet resultSet;
-        City city = null;
+        Comment comment = null;
         try {
             connection = ConnectionPool.getConnectionPool().getConnection();
-            statement = connection.prepareStatement(GET_CITY_BY_ID);
+            statement = connection.prepareStatement(GET_COMMENT_BY_ID);
             statement.setLong(1, id);
             resultSet = statement.executeQuery();
-            city = resultSetToEntity(resultSet);
+            comment = resultSetToEntity(resultSet);
         } catch (Exception e) {
             LOGGER.error(e);
         } finally {
@@ -60,30 +58,29 @@ public class CityDaoImpl extends AbstractDao<City> implements ICityDao {
             statement.close();
             ConnectionPool.getConnectionPool().releaseConnection(connection);
         }
-        return city;
+        return comment;
     }
 
     @Override
-    public City resultSetToEntity(ResultSet resultSet) {
-        City city = new City();
+    public Comment resultSetToEntity(ResultSet resultSet) {
+        Comment comment = new Comment();
         try {
-            city.setCity(resultSet.getString("city"));
-            city.setStateId(resultSet.getLong("state_id"));
+            comment.setContents(resultSet.getString("contents"));
+            comment.setPostId(resultSet.getLong("post_id"));
         } catch (SQLException e) {
             LOGGER.error(e);
         }
-        return city;
+        return comment;
     }
 
     @Override
-    public void update(City entity) throws SQLException {
+    public void update(Comment entity) throws SQLException {
         Connection connection = null;
         PreparedStatement statement = null;
         try {
             connection = ConnectionPool.getConnectionPool().getConnection();
-            statement = connection.prepareStatement(UPDATE_CITY);
-            statement.setString(1, entity.getCity());
-            statement.setLong(2,entity.getStateId());
+            statement = connection.prepareStatement(UPDATE_COMMENT);
+            statement.setString(1, entity.getContents());
             statement.executeUpdate();
         } catch (Exception e) {
             LOGGER.error(e);
@@ -100,7 +97,7 @@ public class CityDaoImpl extends AbstractDao<City> implements ICityDao {
         PreparedStatement statement = null;
         try {
             connection = ConnectionPool.getConnectionPool().getConnection();
-            statement = connection.prepareStatement(DELETE_CITY);
+            statement = connection.prepareStatement(DELETE_COMMENT);
             statement.setLong(1, id);
             statement.executeUpdate();
         } catch (Exception e) {

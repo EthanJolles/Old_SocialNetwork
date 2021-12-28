@@ -1,33 +1,33 @@
-package com.solvd.socialNetwork.dao.jdbcMySQLImpl;
+package com.solvd.socialNetwork.dao.jdbcMySQLImpl.userContent;
 
-import com.solvd.socialNetwork.dao.IDirectMessageDao;
-import com.solvd.socialNetwork.model.user.DirectMessage;
+import com.solvd.socialNetwork.dao.ISavedPostDao;
+import com.solvd.socialNetwork.dao.jdbcMySQLImpl.AbstractDao;
+import com.solvd.socialNetwork.model.userContent.SavedPost;
 import com.solvd.socialNetwork.utils.ConnectionPool;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 
-public class DirectMessageDaoImpl extends AbstractDao<DirectMessage> implements IDirectMessageDao {
-
-    private static final Logger LOGGER = LogManager.getLogger(DirectMessageDaoImpl.class);
-    private static final String CREATE_DIRECT_MESSAGE = "Insert into direct_message (message, " +
-            "user_id, recipient_id, date_sent) VALUES (?, ?, ?, ?)";
-    private static final String GET_DIRECT_MESSAGE_BY_ID = "Select * from direct_message where id=?";
-    private static final String UPDATE_DIRECT_MESSAGE = "Update direct_message set message = ? where id = ?";
-    private static final String DELETE_DIRECT_MESSAGE = "Delete from direct_message where id = ?";
+public class SavedPostDaoImpl extends AbstractDao<SavedPost> implements ISavedPostDao {
+    private static final Logger LOGGER = LogManager.getLogger(SavedPostDaoImpl.class);
+    private static final String CREATE_SAVED_POST = "Insert into saved_post (name, post_id) VALUES (?, ?)";
+    private static final String GET_SAVED_POST_BY_ID = "Select * from saved_post where id = ?";
+    private static final String UPDATE_SAVED_POST = "Update saved_post set name = ?, post_id = ? where id = ?";
+    private static final String DELETE_SAVED_POST = "Delete from saved_post where id = ?";
 
     @Override
-    public void create(DirectMessage directMessage) throws SQLException {
+    public void create(SavedPost savedPost) throws SQLException {
         Connection connection = null;
         PreparedStatement statement = null;
         try {
             connection = ConnectionPool.getConnectionPool().getConnection();
-            statement = connection.prepareStatement(CREATE_DIRECT_MESSAGE);
-            statement.setString(1, directMessage.getMessage());
-            statement.setLong(2, directMessage.getUserId());
-            statement.setLong(3, directMessage.getRecipientId());
-            statement.setDate(4, (Date) directMessage.getDateSent());
+            statement = connection.prepareStatement(CREATE_SAVED_POST);
+            statement.setString(1, savedPost.getName());
+            statement.setLong(2, savedPost.getPostId());
             statement.executeUpdate();
         } catch (Exception e) {
             LOGGER.error(e);
@@ -39,17 +39,18 @@ public class DirectMessageDaoImpl extends AbstractDao<DirectMessage> implements 
     }
 
     @Override
-    public DirectMessage getById(Long id) throws SQLException {
+    public SavedPost getById(Long id) throws SQLException {
         Connection connection = null;
         PreparedStatement statement = null;
         ResultSet resultSet;
-        DirectMessage directMessage = null;
+        SavedPost savedPost = null;
+
         try {
             connection = ConnectionPool.getConnectionPool().getConnection();
-            statement = connection.prepareStatement(GET_DIRECT_MESSAGE_BY_ID);
+            statement = connection.prepareStatement(GET_SAVED_POST_BY_ID);
             statement.setLong(1, id);
             resultSet = statement.executeQuery();
-            directMessage = resultSetToEntity(resultSet);
+            savedPost = resultSetToEntity(resultSet);
         } catch (Exception e) {
             LOGGER.error(e);
         } finally {
@@ -57,31 +58,30 @@ public class DirectMessageDaoImpl extends AbstractDao<DirectMessage> implements 
             statement.close();
             ConnectionPool.getConnectionPool().releaseConnection(connection);
         }
-        return directMessage;
+        return savedPost;
     }
 
     @Override
-    public DirectMessage resultSetToEntity(ResultSet resultSet) {
-        DirectMessage directMessage = new DirectMessage();
+    public SavedPost resultSetToEntity(ResultSet resultSet) {
+        SavedPost savedPost = new SavedPost();
         try {
-            directMessage.setMessage(resultSet.getString("message"));
-            directMessage.setUserId(resultSet.getLong("user_id"));
-            directMessage.setRecipientId(resultSet.getLong("recipient_id"));
-            directMessage.setDateSent(resultSet.getDate("user_id"));
+            savedPost.setName(resultSet.getString("name"));
+            savedPost.setPostId(resultSet.getLong("post_id"));
         } catch (SQLException e) {
             LOGGER.error(e);
         }
-        return directMessage;
+        return savedPost;
     }
 
     @Override
-    public void update(DirectMessage entity) throws SQLException {
+    public void update(SavedPost entity) throws SQLException {
         Connection connection = null;
         PreparedStatement statement = null;
         try {
             connection = ConnectionPool.getConnectionPool().getConnection();
-            statement = connection.prepareStatement(UPDATE_DIRECT_MESSAGE);
-            statement.setString(1, entity.getMessage());
+            statement = connection.prepareStatement(UPDATE_SAVED_POST);
+            statement.setString(1, entity.getName());
+            statement.setLong(2, entity.getPostId());
             statement.executeUpdate();
         } catch (Exception e) {
             LOGGER.error(e);
@@ -98,7 +98,7 @@ public class DirectMessageDaoImpl extends AbstractDao<DirectMessage> implements 
         PreparedStatement statement = null;
         try {
             connection = ConnectionPool.getConnectionPool().getConnection();
-            statement = connection.prepareStatement(DELETE_DIRECT_MESSAGE);
+            statement = connection.prepareStatement(DELETE_SAVED_POST);
             statement.setLong(1, id);
             statement.executeUpdate();
         } catch (Exception e) {

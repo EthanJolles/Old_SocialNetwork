@@ -1,10 +1,8 @@
-package com.solvd.socialNetwork.dao.jdbcMySQLImpl;
+package com.solvd.socialNetwork.dao.jdbcMySQLImpl.billing;
 
+import com.solvd.socialNetwork.dao.jdbcMySQLImpl.AbstractDao;
 import com.solvd.socialNetwork.model.billing.BillingAddress;
 import com.solvd.socialNetwork.dao.IBillingAddressDao;
-import com.solvd.socialNetwork.model.billing.State;
-import com.solvd.socialNetwork.model.userContent.SavedPost;
-import com.solvd.socialNetwork.model.userLists.BlockedList;
 import com.solvd.socialNetwork.utils.ConnectionPool;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;

@@ -1,10 +1,8 @@
-package com.solvd.socialNetwork.dao.jdbcMySQLImpl;
+package com.solvd.socialNetwork.dao.jdbcMySQLImpl.billing;
 
-import com.solvd.socialNetwork.dao.IOrderDao;
-import com.solvd.socialNetwork.model.billing.State;
-import com.solvd.socialNetwork.model.order.Order;
-import com.solvd.socialNetwork.model.userContent.Post;
-import com.solvd.socialNetwork.model.userContent.SavedPost;
+import com.solvd.socialNetwork.dao.jdbcMySQLImpl.AbstractDao;
+import com.solvd.socialNetwork.model.billing.City;
+import com.solvd.socialNetwork.dao.ICityDao;
 import com.solvd.socialNetwork.utils.ConnectionPool;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -14,23 +12,23 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-public class OrderDaoImpl extends AbstractDao<Order> implements IOrderDao {
+public class CityDaoImpl extends AbstractDao<City> implements ICityDao {
 
-    private static final Logger LOGGER = LogManager.getLogger(OrderDaoImpl.class);
-    private static final String CREATE_ORDER = "Insert into order (user_id, product_id) VALUES (?, ?)";
-    private static final String GET_ORDER_BY_ID = "Select * from order where id=?";
-    private static final String UPDATE_ORDER = "Update order set product_id = ? where id = ?";
-    private static final String DELETE_ORDER = "Delete from order where id = ?";
+    private static final Logger LOGGER = LogManager.getLogger(CityDaoImpl.class);
+    private static final String CREATE_CITY = "Insert into city (city, state_id) VALUES (?, ?)";
+    private static final String GET_CITY_BY_ID = "Select * from city where id=?";
+    private static final String UPDATE_CITY = "Update city set city = ? where id = ?";
+    private static final String DELETE_CITY = "Delete from city where id = ?";
 
     @Override
-    public void create(Order order) throws SQLException {
+    public void create(City city) throws SQLException {
         Connection connection = null;
         PreparedStatement statement = null;
         try {
             connection = ConnectionPool.getConnectionPool().getConnection();
-            statement = connection.prepareStatement(CREATE_ORDER);
-            statement.setLong(1, order.getUserId());
-            statement.setLong(2, order.getProductId());
+            statement = connection.prepareStatement(CREATE_CITY);
+            statement.setString(1, city.getCity());
+            statement.setLong(2, city.getStateId());
             statement.executeUpdate();
         } catch (Exception e) {
             LOGGER.error(e);
@@ -42,17 +40,17 @@ public class OrderDaoImpl extends AbstractDao<Order> implements IOrderDao {
     }
 
     @Override
-    public Order getById(Long id) throws SQLException {
+    public City getById(Long id) throws SQLException {
         Connection connection = null;
         PreparedStatement statement = null;
         ResultSet resultSet;
-        Order order = null;
+        City city = null;
         try {
             connection = ConnectionPool.getConnectionPool().getConnection();
-            statement = connection.prepareStatement(GET_ORDER_BY_ID);
+            statement = connection.prepareStatement(GET_CITY_BY_ID);
             statement.setLong(1, id);
             resultSet = statement.executeQuery();
-            order = resultSetToEntity(resultSet);
+            city = resultSetToEntity(resultSet);
         } catch (Exception e) {
             LOGGER.error(e);
         } finally {
@@ -60,29 +58,30 @@ public class OrderDaoImpl extends AbstractDao<Order> implements IOrderDao {
             statement.close();
             ConnectionPool.getConnectionPool().releaseConnection(connection);
         }
-        return order;
+        return city;
     }
 
     @Override
-    public Order resultSetToEntity(ResultSet resultSet) {
-        Order order = new Order();
+    public City resultSetToEntity(ResultSet resultSet) {
+        City city = new City();
         try {
-            order.setUserId(resultSet.getLong("user_id"));
-            order.setProductId(resultSet.getLong("product_id"));
+            city.setCity(resultSet.getString("city"));
+            city.setStateId(resultSet.getLong("state_id"));
         } catch (SQLException e) {
             LOGGER.error(e);
         }
-        return order;
+        return city;
     }
 
     @Override
-    public void update(Order entity) throws SQLException {
+    public void update(City entity) throws SQLException {
         Connection connection = null;
         PreparedStatement statement = null;
         try {
             connection = ConnectionPool.getConnectionPool().getConnection();
-            statement = connection.prepareStatement(UPDATE_ORDER);
-            statement.setLong(1, entity.getProductId());
+            statement = connection.prepareStatement(UPDATE_CITY);
+            statement.setString(1, entity.getCity());
+            statement.setLong(2,entity.getStateId());
             statement.executeUpdate();
         } catch (Exception e) {
             LOGGER.error(e);
@@ -99,7 +98,7 @@ public class OrderDaoImpl extends AbstractDao<Order> implements IOrderDao {
         PreparedStatement statement = null;
         try {
             connection = ConnectionPool.getConnectionPool().getConnection();
-            statement = connection.prepareStatement(DELETE_ORDER);
+            statement = connection.prepareStatement(DELETE_CITY);
             statement.setLong(1, id);
             statement.executeUpdate();
         } catch (Exception e) {

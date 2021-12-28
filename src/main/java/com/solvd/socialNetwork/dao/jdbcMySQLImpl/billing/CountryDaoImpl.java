@@ -1,10 +1,8 @@
-package com.solvd.socialNetwork.dao.jdbcMySQLImpl;
+package com.solvd.socialNetwork.dao.jdbcMySQLImpl.billing;
 
-import com.solvd.socialNetwork.dao.IFriendListDao;
-import com.solvd.socialNetwork.model.billing.State;
-import com.solvd.socialNetwork.model.order.Order;
-import com.solvd.socialNetwork.model.userContent.SavedPost;
-import com.solvd.socialNetwork.model.userLists.FriendList;
+import com.solvd.socialNetwork.dao.jdbcMySQLImpl.AbstractDao;
+import com.solvd.socialNetwork.model.billing.Country;
+import com.solvd.socialNetwork.dao.ICountryDao;
 import com.solvd.socialNetwork.utils.ConnectionPool;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -14,23 +12,22 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-public class FriendListDaoImpl extends AbstractDao<FriendList> implements IFriendListDao {
+public class CountryDaoImpl extends AbstractDao<Country> implements ICountryDao {
 
-    private static final Logger LOGGER = LogManager.getLogger(FriendListDaoImpl.class);
-    private static final String CREATE_FRIEND_LIST = "Insert into friend_list (profile_id, friend_profile_id) VALUES (?, ?)";
-    private static final String GET_FRIEND_LIST_BY_ID = "Select * from friend_list where id=?";
-    private static final String UPDATE_FRIEND_LIST = "Update friend_list set friend_profile_id = ? where id = ?";
-    private static final String DELETE_FRIEND_LIST = "Delete from friend_list where id = ?";
+    private static final Logger LOGGER = LogManager.getLogger(CountryDaoImpl.class);
+    private static final String CREATE_COUNTRY = "Insert into country (country) VALUES (?)";
+    private static final String GET_COUNTRY_BY_ID = "Select * from user where id=?";
+    private static final String UPDATE_COUNTRY = "Update country set country = ? where id = ?";
+    private static final String DELETE_COUNTRY = "Delete from country where id = ?";
 
     @Override
-    public void create(FriendList friendList) throws SQLException {
+    public void create(Country country) throws SQLException {
         Connection connection = null;
         PreparedStatement statement = null;
         try {
             connection = ConnectionPool.getConnectionPool().getConnection();
-            statement = connection.prepareStatement(CREATE_FRIEND_LIST);
-            statement.setLong(1, friendList.getProfileId());
-            statement.setLong(2, friendList.getFriendProfileId());
+            statement = connection.prepareStatement(CREATE_COUNTRY);
+            statement.setString(1, country.getCountry());
             statement.executeUpdate();
         } catch (Exception e) {
             LOGGER.error(e);
@@ -42,17 +39,17 @@ public class FriendListDaoImpl extends AbstractDao<FriendList> implements IFrien
     }
 
     @Override
-    public FriendList getById(Long id) throws SQLException {
+    public Country getById(Long id) throws SQLException {
         Connection connection = null;
         PreparedStatement statement = null;
         ResultSet resultSet;
-        FriendList friendList = null;
+        Country country = null;
         try {
             connection = ConnectionPool.getConnectionPool().getConnection();
-            statement = connection.prepareStatement(GET_FRIEND_LIST_BY_ID);
+            statement = connection.prepareStatement(GET_COUNTRY_BY_ID);
             statement.setLong(1, id);
             resultSet = statement.executeQuery();
-            friendList = resultSetToEntity(resultSet);
+            country = resultSetToEntity(resultSet);
         } catch (Exception e) {
             LOGGER.error(e);
         } finally {
@@ -60,29 +57,28 @@ public class FriendListDaoImpl extends AbstractDao<FriendList> implements IFrien
             statement.close();
             ConnectionPool.getConnectionPool().releaseConnection(connection);
         }
-        return friendList;
+        return country;
     }
 
     @Override
-    public FriendList resultSetToEntity(ResultSet resultSet) {
-        FriendList friendList = new FriendList();
+    public Country resultSetToEntity(ResultSet resultSet) {
+        Country country = new Country();
         try {
-            friendList.setProfileId(resultSet.getLong("profile_id"));
-            friendList.setFriendProfileId(resultSet.getLong("friend_profile_id"));
+            country.setCountry(resultSet.getString("country"));
         } catch (SQLException e) {
             LOGGER.error(e);
         }
-        return friendList;
+        return country;
     }
 
     @Override
-    public void update(FriendList entity) throws SQLException {
+    public void update(Country entity) throws SQLException {
         Connection connection = null;
         PreparedStatement statement = null;
         try {
             connection = ConnectionPool.getConnectionPool().getConnection();
-            statement = connection.prepareStatement(UPDATE_FRIEND_LIST);
-            statement.setLong(1, entity.getFriendProfileId());
+            statement = connection.prepareStatement(UPDATE_COUNTRY);
+            statement.setString(1, entity.getCountry());
             statement.executeUpdate();
         } catch (Exception e) {
             LOGGER.error(e);
@@ -99,7 +95,7 @@ public class FriendListDaoImpl extends AbstractDao<FriendList> implements IFrien
         PreparedStatement statement = null;
         try {
             connection = ConnectionPool.getConnectionPool().getConnection();
-            statement = connection.prepareStatement(DELETE_FRIEND_LIST);
+            statement = connection.prepareStatement(DELETE_COUNTRY);
             statement.setLong(1, id);
             statement.executeUpdate();
         } catch (Exception e) {

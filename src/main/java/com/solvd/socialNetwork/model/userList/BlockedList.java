@@ -1,4 +1,4 @@
-package com.solvd.socialNetwork.model.userLists;
+package com.solvd.socialNetwork.model.userList;
 
 public class BlockedList {
 

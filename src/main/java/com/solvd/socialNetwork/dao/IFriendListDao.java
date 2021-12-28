@@ -1,6 +1,6 @@
 package com.solvd.socialNetwork.dao;
 
-import com.solvd.socialNetwork.model.userLists.FriendList;
+import com.solvd.socialNetwork.model.userList.FriendList;
 
 public interface IFriendListDao extends IBaseDao<FriendList> {
 }

@@ -1,7 +1,8 @@
-package com.solvd.socialNetwork.dao.jdbcMySQLImpl;
+package com.solvd.socialNetwork.dao.jdbcMySQLImpl.order;
 
-import com.solvd.socialNetwork.model.billing.State;
-import com.solvd.socialNetwork.dao.IStateDao;
+import com.solvd.socialNetwork.dao.IOrderDao;
+import com.solvd.socialNetwork.dao.jdbcMySQLImpl.AbstractDao;
+import com.solvd.socialNetwork.model.order.Order;
 import com.solvd.socialNetwork.utils.ConnectionPool;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -11,22 +12,23 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-public class StateDaoImpl extends AbstractDao<State> implements IStateDao {
-    private static final Logger LOGGER = LogManager.getLogger(StateDaoImpl.class);
-    private static final String CREATE_STATE = "Insert into state (state, country_id) VALUES (?, ?)";
-    private static final String GET_STATE_BY_ID = "Select * from state where id = ?";
-    private static final String UPDATE_STATE = "Update state set state = ?, country_id = ? where id = ?";
-    private static final String DELETE_STATE = "Delete from state where id = ?";
+public class OrderDaoImpl extends AbstractDao<Order> implements IOrderDao {
+
+    private static final Logger LOGGER = LogManager.getLogger(OrderDaoImpl.class);
+    private static final String CREATE_ORDER = "Insert into order (user_id, product_id) VALUES (?, ?)";
+    private static final String GET_ORDER_BY_ID = "Select * from order where id=?";
+    private static final String UPDATE_ORDER = "Update order set product_id = ? where id = ?";
+    private static final String DELETE_ORDER = "Delete from order where id = ?";
 
     @Override
-    public void create(State state) throws SQLException {
+    public void create(Order order) throws SQLException {
         Connection connection = null;
         PreparedStatement statement = null;
         try {
             connection = ConnectionPool.getConnectionPool().getConnection();
-            statement = connection.prepareStatement(CREATE_STATE);
-            statement.setString(1, state.getState());
-            statement.setLong(2, state.getCountryId());
+            statement = connection.prepareStatement(CREATE_ORDER);
+            statement.setLong(1, order.getUserId());
+            statement.setLong(2, order.getProductId());
             statement.executeUpdate();
         } catch (Exception e) {
             LOGGER.error(e);
@@ -38,17 +40,17 @@ public class StateDaoImpl extends AbstractDao<State> implements IStateDao {
     }
 
     @Override
-    public State getById(Long id) throws SQLException {
+    public Order getById(Long id) throws SQLException {
         Connection connection = null;
         PreparedStatement statement = null;
         ResultSet resultSet;
-        State state = null;
+        Order order = null;
         try {
             connection = ConnectionPool.getConnectionPool().getConnection();
-            statement = connection.prepareStatement(GET_STATE_BY_ID);
+            statement = connection.prepareStatement(GET_ORDER_BY_ID);
             statement.setLong(1, id);
             resultSet = statement.executeQuery();
-            state = resultSetToEntity(resultSet);
+            order = resultSetToEntity(resultSet);
         } catch (Exception e) {
             LOGGER.error(e);
         } finally {
@@ -56,30 +58,29 @@ public class StateDaoImpl extends AbstractDao<State> implements IStateDao {
             statement.close();
             ConnectionPool.getConnectionPool().releaseConnection(connection);
         }
-        return state;
+        return order;
     }
 
     @Override
-    public State resultSetToEntity(ResultSet resultSet) {
-        State state = new State();
+    public Order resultSetToEntity(ResultSet resultSet) {
+        Order order = new Order();
         try {
-            state.setId(resultSet.getLong("id"));
-            state.setState(resultSet.getString("country_id"));
+            order.setUserId(resultSet.getLong("user_id"));
+            order.setProductId(resultSet.getLong("product_id"));
         } catch (SQLException e) {
             LOGGER.error(e);
         }
-        return state;
+        return order;
     }
 
     @Override
-    public void update(State entity) throws SQLException {
+    public void update(Order entity) throws SQLException {
         Connection connection = null;
         PreparedStatement statement = null;
         try {
             connection = ConnectionPool.getConnectionPool().getConnection();
-            statement = connection.prepareStatement(UPDATE_STATE);
-            statement.setString(1, entity.getState());
-            statement.setLong(2, entity.getCountryId());
+            statement = connection.prepareStatement(UPDATE_ORDER);
+            statement.setLong(1, entity.getProductId());
             statement.executeUpdate();
         } catch (Exception e) {
             LOGGER.error(e);
@@ -96,7 +97,7 @@ public class StateDaoImpl extends AbstractDao<State> implements IStateDao {
         PreparedStatement statement = null;
         try {
             connection = ConnectionPool.getConnectionPool().getConnection();
-            statement = connection.prepareStatement(DELETE_STATE);
+            statement = connection.prepareStatement(DELETE_ORDER);
             statement.setLong(1, id);
             statement.executeUpdate();
         } catch (Exception e) {

@@ -1,10 +1,8 @@
-package com.solvd.socialNetwork.dao.jdbcMySQLImpl;
+package com.solvd.socialNetwork.dao.jdbcMySQLImpl.userContent;
 
 import com.solvd.socialNetwork.dao.IBlockedListDao;
-import com.solvd.socialNetwork.model.billing.State;
-import com.solvd.socialNetwork.model.userContent.SavedPost;
-import com.solvd.socialNetwork.model.userLists.BlockedList;
-import com.solvd.socialNetwork.model.userLists.FriendList;
+import com.solvd.socialNetwork.dao.jdbcMySQLImpl.AbstractDao;
+import com.solvd.socialNetwork.model.userList.BlockedList;
 import com.solvd.socialNetwork.utils.ConnectionPool;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;

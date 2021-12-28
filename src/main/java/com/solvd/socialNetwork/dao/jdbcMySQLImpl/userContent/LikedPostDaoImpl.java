@@ -1,36 +1,34 @@
-package com.solvd.socialNetwork.dao.jdbcMySQLImpl;
+package com.solvd.socialNetwork.dao.jdbcMySQLImpl.userContent;
 
-import com.solvd.socialNetwork.dao.IPostDao;
-import com.solvd.socialNetwork.model.billing.State;
-import com.solvd.socialNetwork.model.profile.Profile;
-import com.solvd.socialNetwork.model.userContent.Post;
-import com.solvd.socialNetwork.model.userContent.SavedPost;
+import com.solvd.socialNetwork.dao.ILikedPostDao;
+import com.solvd.socialNetwork.dao.jdbcMySQLImpl.AbstractDao;
+import com.solvd.socialNetwork.model.userContent.LikedPost;
 import com.solvd.socialNetwork.utils.ConnectionPool;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 
-public class PostDaoImpl extends AbstractDao<Post> implements IPostDao {
+public class LikedPostDaoImpl extends AbstractDao<LikedPost> implements ILikedPostDao {
 
-    private static final Logger LOGGER = LogManager.getLogger(PostDaoImpl.class);
-    private static final String CREATE_POST = "Insert into post (location, " +
-            "caption, is_picture, user_id) VALUES (?, ?, ?, ?)";
-    private static final String GET_POST_BY_ID = "Select * from post where id=?";
-    private static final String UPDATE_POST = "Update post set caption = ? where id = ?";
-    private static final String DELETE_POST = "Delete from post where id = ?";
+    private static final Logger LOGGER = LogManager.getLogger(LikedPostDaoImpl.class);
+    private static final String CREATE_LIKED_POST = "Insert into liked_post (name, post_id) VALUES (?, ?)";
+    private static final String GET_LIKED_POST_BY_ID = "Select * from liked_post where id=?";
+    private static final String UPDATE_LIKED_POST = "Update liked_post set name = ? where id = ?";
+    private static final String DELETE_LIKED_POST = "Delete from liked_post where id = ?";
 
     @Override
-    public void create(Post post) throws SQLException {
+    public void create(LikedPost likedPost) throws SQLException {
         Connection connection = null;
         PreparedStatement statement = null;
         try {
             connection = ConnectionPool.getConnectionPool().getConnection();
-            statement = connection.prepareStatement(CREATE_POST);
-            statement.setString(1, post.getLocation());
-            statement.setString(2, post.getCaption());
-            statement.setBoolean(3, post.getPicture());
-            statement.setLong(4, post.getUserId());
+            statement = connection.prepareStatement(CREATE_LIKED_POST);
+            statement.setString(1, likedPost.getName());
+            statement.setLong(2, likedPost.getPostId());
             statement.executeUpdate();
         } catch (Exception e) {
             LOGGER.error(e);
@@ -42,17 +40,18 @@ public class PostDaoImpl extends AbstractDao<Post> implements IPostDao {
     }
 
     @Override
-    public Post getById(Long id) throws SQLException {
+    public LikedPost getById(Long id) throws SQLException {
         Connection connection = null;
         PreparedStatement statement = null;
         ResultSet resultSet;
-        Post post = null;
+        LikedPost likedPost = null;
+
         try {
             connection = ConnectionPool.getConnectionPool().getConnection();
-            statement = connection.prepareStatement(GET_POST_BY_ID);
+            statement = connection.prepareStatement(GET_LIKED_POST_BY_ID);
             statement.setLong(1, id);
             resultSet = statement.executeQuery();
-            post = resultSetToEntity(resultSet);
+            likedPost = resultSetToEntity(resultSet);
         } catch (Exception e) {
             LOGGER.error(e);
         } finally {
@@ -60,31 +59,30 @@ public class PostDaoImpl extends AbstractDao<Post> implements IPostDao {
             statement.close();
             ConnectionPool.getConnectionPool().releaseConnection(connection);
         }
-        return post;
+        return likedPost;
     }
 
     @Override
-    public Post resultSetToEntity(ResultSet resultSet) {
-        Post post = new Post();
+    public LikedPost resultSetToEntity(ResultSet resultSet) {
+        LikedPost likedPost = new LikedPost();
         try {
-            post.setLocation(resultSet.getString("location"));
-            post.setCaption(resultSet.getString("caption"));
-            post.setPicture(resultSet.getBoolean("is_picture"));
-            post.setUserId(resultSet.getLong("user_id"));
+            likedPost.setName(resultSet.getString("name"));
+            likedPost.setPostId(resultSet.getLong("post_id"));
         } catch (SQLException e) {
             LOGGER.error(e);
         }
-        return post;
+        return likedPost;
     }
 
     @Override
-    public void update(Post entity) throws SQLException {
+    public void update(LikedPost entity) throws SQLException {
         Connection connection = null;
         PreparedStatement statement = null;
         try {
             connection = ConnectionPool.getConnectionPool().getConnection();
-            statement = connection.prepareStatement(UPDATE_POST);
-            statement.setString(1, entity.getCaption());
+            statement = connection.prepareStatement(UPDATE_LIKED_POST);
+            statement.setString(1, entity.getName());
+            statement.setLong(2, entity.getPostId());
             statement.executeUpdate();
         } catch (Exception e) {
             LOGGER.error(e);
@@ -101,7 +99,7 @@ public class PostDaoImpl extends AbstractDao<Post> implements IPostDao {
         PreparedStatement statement = null;
         try {
             connection = ConnectionPool.getConnectionPool().getConnection();
-            statement = connection.prepareStatement(DELETE_POST);
+            statement = connection.prepareStatement(DELETE_LIKED_POST);
             statement.setLong(1, id);
             statement.executeUpdate();
         } catch (Exception e) {

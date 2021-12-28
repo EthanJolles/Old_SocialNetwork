@@ -1,9 +1,8 @@
-package com.solvd.socialNetwork.dao.jdbcMySQLImpl;
+package com.solvd.socialNetwork.dao.jdbcMySQLImpl.user;
 
-import com.solvd.socialNetwork.model.billing.Country;
-import com.solvd.socialNetwork.dao.ICountryDao;
-import com.solvd.socialNetwork.model.billing.State;
-import com.solvd.socialNetwork.model.userContent.SavedPost;
+import com.solvd.socialNetwork.dao.IUserDao;
+import com.solvd.socialNetwork.dao.jdbcMySQLImpl.AbstractDao;
+import com.solvd.socialNetwork.model.user.User;
 import com.solvd.socialNetwork.utils.ConnectionPool;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -13,22 +12,23 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-public class CountryDaoImpl extends AbstractDao<Country> implements ICountryDao {
+public class UserDaoImpl extends AbstractDao<User> implements IUserDao {
 
-    private static final Logger LOGGER = LogManager.getLogger(CountryDaoImpl.class);
-    private static final String CREATE_COUNTRY = "Insert into country (country) VALUES (?)";
-    private static final String GET_COUNTRY_BY_ID = "Select * from user where id=?";
-    private static final String UPDATE_COUNTRY = "Update country set country = ? where id = ?";
-    private static final String DELETE_COUNTRY = "Delete from country where id = ?";
+    private static final Logger LOGGER = LogManager.getLogger(UserDaoImpl.class);
+    private static final String CREATE_USER = "Insert into user (username, password) VALUES (?, ?)";
+    private static final String GET_USER_BY_ID = "Select * from user where id=?";
+    private static final String UPDATE_USER = "Update user set username = ?, password = ? where id = ?";
+    private static final String DELETE_USER = "Delete from user where id = ?";
 
     @Override
-    public void create(Country country) throws SQLException {
+    public void create(User user) throws SQLException {
         Connection connection = null;
         PreparedStatement statement = null;
         try {
             connection = ConnectionPool.getConnectionPool().getConnection();
-            statement = connection.prepareStatement(CREATE_COUNTRY);
-            statement.setString(1, country.getCountry());
+            statement = connection.prepareStatement(CREATE_USER);
+            statement.setString(1, user.getUsername());
+            statement.setString(2, user.getPassword());
             statement.executeUpdate();
         } catch (Exception e) {
             LOGGER.error(e);
@@ -40,17 +40,18 @@ public class CountryDaoImpl extends AbstractDao<Country> implements ICountryDao 
     }
 
     @Override
-    public Country getById(Long id) throws SQLException {
+    public User getById(Long id) throws SQLException {
         Connection connection = null;
         PreparedStatement statement = null;
         ResultSet resultSet;
-        Country country = null;
+        User user = null;
+
         try {
             connection = ConnectionPool.getConnectionPool().getConnection();
-            statement = connection.prepareStatement(GET_COUNTRY_BY_ID);
+            statement = connection.prepareStatement(GET_USER_BY_ID);
             statement.setLong(1, id);
             resultSet = statement.executeQuery();
-            country = resultSetToEntity(resultSet);
+            user = resultSetToEntity(resultSet);
         } catch (Exception e) {
             LOGGER.error(e);
         } finally {
@@ -58,28 +59,30 @@ public class CountryDaoImpl extends AbstractDao<Country> implements ICountryDao 
             statement.close();
             ConnectionPool.getConnectionPool().releaseConnection(connection);
         }
-        return country;
+        return user;
     }
 
     @Override
-    public Country resultSetToEntity(ResultSet resultSet) {
-        Country country = new Country();
+    public User resultSetToEntity(ResultSet resultSet) {
+        User user = new User();
         try {
-            country.setCountry(resultSet.getString("country"));
+            user.setUsername(resultSet.getString("first_name"));
+            user.setPassword(resultSet.getString("last_name"));
         } catch (SQLException e) {
             LOGGER.error(e);
         }
-        return country;
+        return user;
     }
 
     @Override
-    public void update(Country entity) throws SQLException {
+    public void update(User entity) throws SQLException {
         Connection connection = null;
         PreparedStatement statement = null;
         try {
             connection = ConnectionPool.getConnectionPool().getConnection();
-            statement = connection.prepareStatement(UPDATE_COUNTRY);
-            statement.setString(1, entity.getCountry());
+            statement = connection.prepareStatement(UPDATE_USER);
+            statement.setString(1,entity.getUsername());
+            statement.setString(2, entity.getPassword());
             statement.executeUpdate();
         } catch (Exception e) {
             LOGGER.error(e);
@@ -96,7 +99,7 @@ public class CountryDaoImpl extends AbstractDao<Country> implements ICountryDao 
         PreparedStatement statement = null;
         try {
             connection = ConnectionPool.getConnectionPool().getConnection();
-            statement = connection.prepareStatement(DELETE_COUNTRY);
+            statement = connection.prepareStatement(DELETE_USER);
             statement.setLong(1, id);
             statement.executeUpdate();
         } catch (Exception e) {

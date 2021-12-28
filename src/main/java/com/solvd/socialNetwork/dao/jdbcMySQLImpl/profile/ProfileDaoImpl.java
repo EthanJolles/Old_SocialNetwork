@@ -1,7 +1,7 @@
-package com.solvd.socialNetwork.dao.jdbcMySQLImpl;
+package com.solvd.socialNetwork.dao.jdbcMySQLImpl.profile;
 
 import com.solvd.socialNetwork.dao.IProfileDao;
-import com.solvd.socialNetwork.model.billing.State;
+import com.solvd.socialNetwork.dao.jdbcMySQLImpl.AbstractDao;
 import com.solvd.socialNetwork.model.profile.Profile;
 import com.solvd.socialNetwork.utils.ConnectionPool;
 import org.apache.logging.log4j.LogManager;
