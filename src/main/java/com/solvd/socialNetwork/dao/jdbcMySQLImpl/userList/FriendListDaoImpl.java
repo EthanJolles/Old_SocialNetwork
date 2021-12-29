@@ -65,6 +65,7 @@ public class FriendListDaoImpl extends AbstractDao<FriendList> implements IFrien
     public FriendList resultSetToEntity(ResultSet resultSet) {
         FriendList friendList = new FriendList();
         try {
+            friendList.setId(resultSet.getLong("id"));
             friendList.setProfileId(resultSet.getLong("profile_id"));
             friendList.setFriendProfileId(resultSet.getLong("friend_profile_id"));
         } catch (SQLException e) {

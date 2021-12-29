@@ -65,6 +65,7 @@ public class CommentDaoImpl extends AbstractDao<Comment> implements ICommentDao 
     public Comment resultSetToEntity(ResultSet resultSet) {
         Comment comment = new Comment();
         try {
+            comment.setId(resultSet.getLong("id"));
             comment.setContents(resultSet.getString("contents"));
             comment.setPostId(resultSet.getLong("post_id"));
         } catch (SQLException e) {

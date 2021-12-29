@@ -64,6 +64,7 @@ public class CountryDaoImpl extends AbstractDao<Country> implements ICountryDao 
     public Country resultSetToEntity(ResultSet resultSet) {
         Country country = new Country();
         try {
+            country.setId(resultSet.getLong(("id")));
             country.setCountry(resultSet.getString("country"));
         } catch (SQLException e) {
             LOGGER.error(e);

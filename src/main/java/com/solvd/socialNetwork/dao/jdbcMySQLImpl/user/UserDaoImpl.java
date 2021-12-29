@@ -66,6 +66,7 @@ public class UserDaoImpl extends AbstractDao<User> implements IUserDao {
     public User resultSetToEntity(ResultSet resultSet) {
         User user = new User();
         try {
+            user.setId(resultSet.getLong("id"));
             user.setUsername(resultSet.getString("first_name"));
             user.setPassword(resultSet.getString("last_name"));
         } catch (SQLException e) {

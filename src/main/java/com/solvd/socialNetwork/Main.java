@@ -1,12 +1,15 @@
 package com.solvd.socialNetwork;
 
 import com.solvd.socialNetwork.dao.jdbcMySQLImpl.user.UserDaoImpl;
-import com.solvd.socialNetwork.enums.Month;
 import com.solvd.socialNetwork.model.user.User;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
+import javax.xml.bind.Unmarshaller;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.sql.*;
 
 public class Main {
@@ -27,10 +30,25 @@ public class Main {
 //        User test4 = new User("test4","solvdintern123");
 //        userDao.create(test4);
 
-        User test5 = new User("test5", "solvdintern123");
+//        User test5 = new User("test5", "solvdintern123");
 //        userDao.create(test5);
-        userDao.update(test5);
+//        userDao.update(test5);
 
 //        System.out.println(JAXBHandler.unmarshal(new File("product.xml")));
+        JAXBContext jaxbContext;
+        try
+        {
+            jaxbContext = JAXBContext.newInstance(User.class);
+
+            Unmarshaller jaxbUnmarshaller = jaxbContext.createUnmarshaller();
+
+            User user = (User) jaxbUnmarshaller.unmarshal(new FileReader("product.xml"));
+
+            System.out.println(user);
+        }
+        catch (JAXBException | FileNotFoundException e)
+        {
+            LOGGER.error(e);
+        }
     }
 }

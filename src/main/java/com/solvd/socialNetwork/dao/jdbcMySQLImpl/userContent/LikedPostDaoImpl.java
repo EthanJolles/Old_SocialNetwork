@@ -66,6 +66,7 @@ public class LikedPostDaoImpl extends AbstractDao<LikedPost> implements ILikedPo
     public LikedPost resultSetToEntity(ResultSet resultSet) {
         LikedPost likedPost = new LikedPost();
         try {
+            likedPost.setId(resultSet.getLong("id"));
             likedPost.setName(resultSet.getString("name"));
             likedPost.setPostId(resultSet.getLong("post_id"));
         } catch (SQLException e) {

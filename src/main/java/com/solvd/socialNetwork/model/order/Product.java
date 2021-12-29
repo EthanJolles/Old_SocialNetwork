@@ -1,11 +1,10 @@
 package com.solvd.socialNetwork.model.order;
 
-import javax.xml.bind.annotation.XmlAttribute;
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.*;
 
 import java.util.Date;
-@XmlRootElement(name="products")
+@XmlRootElement(name = "products")
+@XmlAccessorType(XmlAccessType.PROPERTY)
 public class Product {
     @XmlAttribute
     private Long id;

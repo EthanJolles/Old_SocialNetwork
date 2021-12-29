@@ -71,6 +71,7 @@ public class ProfileDaoImpl extends AbstractDao<Profile> implements IProfileDao 
     public Profile resultSetToEntity(ResultSet resultSet) {
         Profile profile = new Profile();
         try {
+            profile.setId(resultSet.getLong("id"));
             profile.setFirstName(resultSet.getString("first_name"));
             profile.setLastName(resultSet.getString("last_name"));
             profile.setMiddleInitial(resultSet.getString("middle_initial"));

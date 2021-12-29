@@ -70,6 +70,7 @@ public class ProductDaoImpl extends AbstractDao<Product> implements IProductDao 
     public Product resultSetToEntity(ResultSet resultSet) {
         Product product = new Product();
         try {
+            product.setId(resultSet.getLong("id"));
             product.setName(resultSet.getString("name"));
             product.setPrice(resultSet.getDouble("price"));
             product.setDesc(resultSet.getString("desc"));
