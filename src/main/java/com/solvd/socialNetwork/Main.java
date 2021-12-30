@@ -2,7 +2,7 @@ package com.solvd.socialNetwork;
 
 import com.solvd.socialNetwork.dao.jdbcMySQLImpl.UserDaoImpl;
 import com.solvd.socialNetwork.model.user.User;
-import com.solvd.socialNetwork.utils.JAXBHandler;
+import com.solvd.socialNetwork.utils.JaxBHandler;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -36,7 +36,7 @@ public class Main {
         userDao.create(test5);
         userDao.update(test5);
 
-        LOGGER.info(JAXBHandler.unmarshal(new File("product.xml")));
+        LOGGER.info(JaxBHandler.unmarshal(new File("product.xml")));
 
         JAXBContext jaxbContext;
         try
