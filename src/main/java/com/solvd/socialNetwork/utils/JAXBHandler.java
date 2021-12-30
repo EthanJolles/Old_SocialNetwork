@@ -8,6 +8,7 @@ import javax.xml.bind.Unmarshaller;
 import java.io.File;
 
 public class JAXBHandler {
+
     public static Product unmarshal(File importFile) throws JAXBException {
         Product product = null;
         JAXBContext context;
