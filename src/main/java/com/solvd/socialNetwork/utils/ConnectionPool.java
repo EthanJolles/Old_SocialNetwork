@@ -3,22 +3,31 @@ package com.solvd.socialNetwork.utils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.List;
+import java.util.Properties;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 public class ConnectionPool {
     final static Logger LOGGER = LogManager.getLogger(ConnectionPool.class);
 
     private static ConnectionPool connectionPool = new ConnectionPool();
-
-    private static final String URL = System.getenv("URL");
-    private static final String USER = System.getenv("USER");
-    private static final String PASSWORD = System.getenv("PASSWORD");
     private static final int INITIAL_POOL_SIZE = 5;
     private final List<Connection> CONNECTIONS = new CopyOnWriteArrayList<>();
+
+    private static final CredentialValues CREDENTIAL_VALUES = new CredentialValues("db.properties");
+    private static final String URL = CREDENTIAL_VALUES.getUrl();
+    private static final String USER = CREDENTIAL_VALUES.getUser();
+    private static final String PASSWORD = CREDENTIAL_VALUES.getPassword();
+//    private static final String URL = System.getenv("URL");
+//    private static final String USER = System.getenv("USER");
+//    private static final String PASSWORD = System.getenv("PASSWORD");
+
 
     public ConnectionPool() {
         LOGGER.info("Entering ConnectionPool constructor");
@@ -35,6 +44,7 @@ public class ConnectionPool {
     }
 
     public static ConnectionPool getConnectionPool() {
+        LOGGER.info("Getting connection pool");
         if (connectionPool == null) {
             synchronized (ConnectionPool.class) {
                     connectionPool = new ConnectionPool();
