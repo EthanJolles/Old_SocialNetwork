@@ -36,7 +36,7 @@ public class Main {
         userDao.create(test5);
         userDao.update(test5);
 
-        System.out.println(JAXBHandler.unmarshal(new File("product.xml")));
+        LOGGER.info(JAXBHandler.unmarshal(new File("product.xml")));
 
         JAXBContext jaxbContext;
         try
