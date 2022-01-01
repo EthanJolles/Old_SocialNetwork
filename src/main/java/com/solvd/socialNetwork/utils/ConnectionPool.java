@@ -21,12 +21,10 @@ public class ConnectionPool {
     private final List<Connection> CONNECTIONS = new CopyOnWriteArrayList<>();
 
     private static final CredentialValues CREDENTIAL_VALUES = new CredentialValues("db.properties");
+    private static final String DRIVER = "com.mysql.cj.jdbc.Driver";
     private static final String URL = CREDENTIAL_VALUES.getUrl();
     private static final String USER = CREDENTIAL_VALUES.getUser();
     private static final String PASSWORD = CREDENTIAL_VALUES.getPassword();
-//    private static final String URL = System.getenv("URL");
-//    private static final String USER = System.getenv("USER");
-//    private static final String PASSWORD = System.getenv("PASSWORD");
 
 
     public ConnectionPool() {
@@ -34,7 +32,7 @@ public class ConnectionPool {
         for (int i = 0; i < INITIAL_POOL_SIZE; i++) {
             Connection connection;
             try {
-                Class.forName("com.mysql.cj.jdbc.Driver");
+                Class.forName(DRIVER);
                 connection = DriverManager.getConnection(URL, USER, PASSWORD);
                 CONNECTIONS.add(connection);
             } catch (SQLException | ClassNotFoundException e) {
