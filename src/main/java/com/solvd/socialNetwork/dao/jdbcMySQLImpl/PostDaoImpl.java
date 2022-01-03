@@ -19,6 +19,7 @@ public class PostDaoImpl extends AbstractDao<Post> implements IPostDao {
 
     @Override
     public void create(Post post) throws SQLException {
+        LOGGER.info("Creating element");
         Connection connection = null;
         PreparedStatement statement = null;
         try {

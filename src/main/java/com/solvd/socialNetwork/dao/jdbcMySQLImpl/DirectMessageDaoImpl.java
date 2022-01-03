@@ -19,6 +19,7 @@ public class DirectMessageDaoImpl extends AbstractDao<DirectMessage> implements 
 
     @Override
     public void create(DirectMessage directMessage) throws SQLException {
+        LOGGER.info("Creating element");
         Connection connection = null;
         PreparedStatement statement = null;
         try {

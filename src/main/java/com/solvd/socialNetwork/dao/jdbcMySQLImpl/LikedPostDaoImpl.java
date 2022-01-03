@@ -21,6 +21,7 @@ public class LikedPostDaoImpl extends AbstractDao<LikedPost> implements ILikedPo
 
     @Override
     public void create(LikedPost likedPost) throws SQLException {
+        LOGGER.info("Creating element");
         Connection connection = null;
         PreparedStatement statement = null;
         try {

@@ -21,6 +21,7 @@ public class CommentDaoImpl extends AbstractDao<Comment> implements ICommentDao 
 
     @Override
     public void create(Comment comment) throws SQLException {
+        LOGGER.info("Creating element");
         Connection connection = null;
         PreparedStatement statement = null;
         try {

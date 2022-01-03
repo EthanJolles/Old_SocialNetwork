@@ -20,6 +20,7 @@ public class ProfileDaoImpl extends AbstractDao<Profile> implements IProfileDao 
 
     @Override
     public void create(Profile profile) throws SQLException {
+        LOGGER.info("Creating element");
         Connection connection = null;
         PreparedStatement statement = null;
         try {

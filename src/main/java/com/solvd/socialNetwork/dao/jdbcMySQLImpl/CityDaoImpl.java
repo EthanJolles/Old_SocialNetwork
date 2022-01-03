@@ -21,6 +21,7 @@ public class CityDaoImpl extends AbstractDao<City> implements ICityDao {
 
     @Override
     public void create(City city) throws SQLException {
+        LOGGER.info("Creating element");
         Connection connection = null;
         PreparedStatement statement = null;
         try {

@@ -3,14 +3,10 @@ package com.solvd.socialNetwork.utils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.InputStream;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.List;
-import java.util.Properties;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 public class ConnectionPool {
@@ -20,20 +16,19 @@ public class ConnectionPool {
     private static final int INITIAL_POOL_SIZE = 5;
     private final List<Connection> CONNECTIONS = new CopyOnWriteArrayList<>();
 
-    private static final CredentialValues CREDENTIAL_VALUES = new CredentialValues("db.properties");
     private static final String DRIVER = "com.mysql.cj.jdbc.Driver";
-    private static final String URL = CREDENTIAL_VALUES.getUrl();
-    private static final String USER = CREDENTIAL_VALUES.getUser();
-    private static final String PASSWORD = CREDENTIAL_VALUES.getPassword();
 
 
     public ConnectionPool() {
-        LOGGER.info("Entering ConnectionPool constructor");
+        LOGGER.info("Entering pool constrsuctor");
+        CredentialValues credentialValues = new CredentialValues("db.properties");
         for (int i = 0; i < INITIAL_POOL_SIZE; i++) {
+            LOGGER.info("Creating connection");
             Connection connection;
             try {
                 Class.forName(DRIVER);
-                connection = DriverManager.getConnection(URL, USER, PASSWORD);
+                connection = DriverManager.getConnection(credentialValues.getUrl(),
+                        credentialValues.getUser(), credentialValues.getPassword());
                 CONNECTIONS.add(connection);
             } catch (SQLException | ClassNotFoundException e) {
                 LOGGER.error(e);

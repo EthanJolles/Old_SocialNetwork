@@ -21,6 +21,7 @@ public class OrderDaoImpl extends AbstractDao<Order> implements IOrderDao {
 
     @Override
     public void create(Order order) throws SQLException {
+        LOGGER.info("Creating element");
         Connection connection = null;
         PreparedStatement statement = null;
         try {

@@ -20,6 +20,7 @@ public class ProductDaoImpl extends AbstractDao<Product> implements IProductDao 
 
     @Override
     public void create(Product product) throws SQLException {
+        LOGGER.info("Creating element");
         Connection connection = null;
         PreparedStatement statement = null;
         try {

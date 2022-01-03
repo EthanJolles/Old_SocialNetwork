@@ -3,28 +3,19 @@ package com.solvd.socialNetwork.model.order;
 import javax.xml.bind.annotation.*;
 
 import java.util.Date;
-@XmlRootElement(name = "products")
-@XmlAccessorType(XmlAccessType.PROPERTY)
 public class Product {
-    @XmlAttribute
     private Long id;
 
-    @XmlElement(name="name")
     private String name;
 
-    @XmlElement (name="price")
     private Double price;
 
-    @XmlElement (name="desc")
     private String desc;
 
-    @XmlElement (name="datListed")
     private Date dateListed;
 
-    @XmlElement (name="sku")
     private Long sku;
 
-    @XmlElement (name="modelNumber")
     private String modelNumber;
 
     @XmlElement (name="isOutOfStock")

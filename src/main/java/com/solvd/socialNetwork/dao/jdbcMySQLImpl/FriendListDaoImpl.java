@@ -21,6 +21,7 @@ public class FriendListDaoImpl extends AbstractDao<FriendList> implements IFrien
 
     @Override
     public void create(FriendList friendList) throws SQLException {
+        LOGGER.info("Creating element");
         Connection connection = null;
         PreparedStatement statement = null;
         try {

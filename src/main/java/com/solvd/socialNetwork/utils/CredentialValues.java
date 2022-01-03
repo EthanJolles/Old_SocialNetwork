@@ -26,6 +26,9 @@ public class CredentialValues {
 			url = properties.getProperty("url");
 			user = properties.getProperty("user");
 			password = properties.getProperty("password");
+			LOGGER.info(url);
+			LOGGER.info(user);
+			LOGGER.info(password);
 		} catch (Exception e) {
 			LOGGER.error(e);
 		}

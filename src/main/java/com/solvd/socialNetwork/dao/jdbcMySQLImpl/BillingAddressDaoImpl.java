@@ -22,6 +22,7 @@ public class BillingAddressDaoImpl extends AbstractDao<BillingAddress> implement
 
     @Override
     public void create(BillingAddress billingAddress) throws SQLException {
+        LOGGER.info("Creating element");
         Connection connection = null;
         PreparedStatement statement = null;
         try {

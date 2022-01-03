@@ -22,6 +22,7 @@ public class BlockedListDaoImpl extends AbstractDao<BlockedList> implements IBlo
 
     @Override
     public void create(BlockedList blockedList) throws SQLException {
+        LOGGER.info("Creating element");
         Connection connection = null;
         PreparedStatement statement = null;
         try {

@@ -21,6 +21,7 @@ public class CountryDaoImpl extends AbstractDao<Country> implements ICountryDao 
 
     @Override
     public void create(Country country) throws SQLException {
+        LOGGER.info("Creating element");
         Connection connection = null;
         PreparedStatement statement = null;
         try {
