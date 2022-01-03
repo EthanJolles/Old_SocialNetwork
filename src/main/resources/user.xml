@@ -1,13 +1,16 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <users>
     <user id = "1">
-        <username>ethanjolles</username>
-        <password>sovldIntern</password>
-    </user>
-    <user id = "2">
-        <username>andrewnazarenko</username>
-        <password>solvdProfessor</password>
+        <username>"test20"</username>
+        <password>"sovldIntern"</password>
     </user>
 </users>
+<!--    <user id =     <user id = "2">-->
+    <!--        <username>andrewnazarenko</username>-->
+    <!--        <password>solvdProfessor</password>-->
+    <!--    </user>"2">-->
+<!--        <username>andrewnazarenko</username>-->
+<!--        <password>solvdProfessor</password>-->
+<!--    </user>-->
 
 

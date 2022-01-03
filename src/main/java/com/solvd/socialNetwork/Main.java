@@ -2,14 +2,13 @@ package com.solvd.socialNetwork;
 
 import com.solvd.socialNetwork.dao.jdbcMySQLImpl.UserDaoImpl;
 import com.solvd.socialNetwork.model.user.User;
-import com.solvd.socialNetwork.utils.ConnectionPool;
-import com.solvd.socialNetwork.utils.CredentialValues;
 import com.solvd.socialNetwork.utils.JaxBHandler;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
+import javax.xml.bind.Marshaller;
 import javax.xml.bind.Unmarshaller;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -21,26 +20,27 @@ public class Main {
     final static Logger LOGGER = LogManager.getLogger(Main.class);
 
     public static void main(String[] args) throws SQLException, JAXBException {
-        UserDaoImpl userDao = new UserDaoImpl();
-        User test1 = new User("test12","solvdintern123");
-        userDao.create(test1);
+//        UserDaoImpl userDao = new UserDaoImpl();
+//        User user = new User("test13","solvdintern123");
+//        userDao.create(user);
 
-//        LOGGER.info(JaxBHandler.unmarshal(new File("resources/product.xml")));
+        File xmlFile = new File("" +
+                "/Users/ethanjolles/Desktop/SocialNetwork/SocialNetwork/src/main/resources/user.xml");
 
-//        JAXBContext jaxbContext;
-//        try
-//        {
-//            jaxbContext = JAXBContext.newInstance(User.class);
-//
-//            Unmarshaller jaxbUnmarshaller = jaxbContext.createUnmarshaller();
-//
-//            User user = (User) jaxbUnmarshaller.unmarshal(new FileReader("product.xml"));
-//
-//            System.out.println(user);
-//        }
-//        catch (JAXBException | FileNotFoundException e)
-//        {
-//            LOGGER.error(e);
-//        }
+        JAXBContext jaxbContext;
+        try
+        {
+            jaxbContext = JAXBContext.newInstance(User.class);
+
+            Unmarshaller jaxbUnmarshaller = jaxbContext.createUnmarshaller();
+
+            User user = (User) jaxbUnmarshaller.unmarshal(xmlFile);
+
+            System.out.println(user);
+        }
+        catch (JAXBException e)
+        {
+            LOGGER.error(e);
+        }
     }
 }
