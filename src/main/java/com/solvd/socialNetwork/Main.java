@@ -1,6 +1,5 @@
 package com.solvd.socialNetwork;
 
-import com.solvd.socialNetwork.dao.jdbcMySQLImpl.UserDaoImpl;
 import com.solvd.socialNetwork.model.user.User;
 import com.solvd.socialNetwork.utils.JaxBHandler;
 import org.apache.logging.log4j.LogManager;
@@ -24,23 +23,23 @@ public class Main {
 //        User user = new User("test13","solvdintern123");
 //        userDao.create(user);
 
-        File xmlFile = new File("" +
-                "/Users/ethanjolles/Desktop/SocialNetwork/SocialNetwork/src/main/resources/user.xml");
-
-        JAXBContext jaxbContext;
-        try
-        {
-            jaxbContext = JAXBContext.newInstance(User.class);
-
-            Unmarshaller jaxbUnmarshaller = jaxbContext.createUnmarshaller();
-
-            User user = (User) jaxbUnmarshaller.unmarshal(xmlFile);
-
-            System.out.println(user);
-        }
-        catch (JAXBException e)
-        {
-            LOGGER.error(e);
-        }
+//        File xmlFile = new File("" +
+//                "/Users/ethanjolles/Desktop/SocialNetwork/SocialNetwork/src/main/resources/user.xml");
+//
+//        JAXBContext jaxbContext;
+//        try
+//        {
+//            jaxbContext = JAXBContext.newInstance(User.class);
+//
+//            Unmarshaller jaxbUnmarshaller = jaxbContext.createUnmarshaller();
+//
+//            User user = (User) jaxbUnmarshaller.unmarshal(xmlFile);
+//
+//            System.out.println(user);
+//        }
+//        catch (JAXBException e)
+//        {
+//            LOGGER.error(e);
+//        }
     }
 }
