@@ -13,6 +13,7 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import java.io.IOException;
 
+@Deprecated
 public class DomParser {
     final static Logger LOGGER = LogManager.getLogger(DomParser.class);
 

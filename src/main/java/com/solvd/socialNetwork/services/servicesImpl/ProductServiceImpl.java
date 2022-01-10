@@ -36,7 +36,7 @@ public class ProductServiceImpl extends AbstractServiceImpl<Product> implements 
                 temppProduct.setPrice(resultSet.getDouble("price"));
                 temppProduct.setDesc(resultSet.getString("desc"));
                 temppProduct.setDateListed(resultSet.getDate("date_listed"));
-                temppProduct.setOutOfStock(resultSet.getBoolean("is_out_of_stock"));
+                temppProduct.setIsOutOfStock(resultSet.getBytes("is_out_of_stock"));
                 temppProduct.setSku(resultSet.getLong("sku"));
                 temppProduct.setModelNumber(resultSet.getString("model_number"));
                 try {

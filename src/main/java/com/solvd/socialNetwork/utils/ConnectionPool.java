@@ -19,7 +19,7 @@ public class ConnectionPool {
     private static final String DRIVER = "com.mysql.cj.jdbc.Driver";
 
 
-    public ConnectionPool() {
+    private ConnectionPool() {
         LOGGER.info("Entering pool constrsuctor");
         CredentialValues credentialValues = new CredentialValues("db.properties");
         for (int i = 0; i < INITIAL_POOL_SIZE; i++) {
