@@ -1,5 +1,6 @@
 package com.solvd.socialNetwork;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.solvd.socialNetwork.dao.jdbcMySQLImpl.UserDaoImpl;
 import com.solvd.socialNetwork.model.order.Product;
 import com.solvd.socialNetwork.model.user.User;
@@ -25,7 +26,7 @@ public class Main {
 
         //JaxB unmarshaller
         try {
-            LOGGER.info(JaxBHandler.unmarshall("product.xml", Product.class));
+            LOGGER.info(JaxBHandler.unmarshal("product.xml", Product.class));
         } catch (JAXBException e) {
             LOGGER.error(e);
         }
@@ -33,11 +34,15 @@ public class Main {
         try {
             User userObj = new User("Test2", "Test2");
             LOGGER.info("Attempting to marshal");
-            JaxBHandler.marshaller(userObj, User.class, "userObj");
+            JaxBHandler.marshal(userObj, User.class, "userObj");
             LOGGER.info("Marshal completed");
         } catch (JAXBException e) {
             LOGGER.error(e);
         }
+
+//        ObjectMapper om = new ObjectMapper();
+//        User u = om.readValue();
+//        String result = om.writeValueAsString();
     }
 
 

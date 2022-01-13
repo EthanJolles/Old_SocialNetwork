@@ -20,7 +20,7 @@ public class JaxBHandler<T> {
         throw new AssertionError("Trying to instantiate utility class");
     }
 
-    public static <T> T unmarshall(String xml, Class<T> clazz) throws JAXBException {
+    public static <T> T unmarshal(String xml, Class<T> clazz) throws JAXBException {
         JAXBContext context = CONTEXT.get(clazz);
         if (context == null){
             context = JAXBContext.newInstance(clazz);
@@ -36,7 +36,7 @@ public class JaxBHandler<T> {
         throw new IllegalArgumentException("XML does not represent an instance of type:" + clazz.getName());
     }
 
-    public static <T> void marshaller(T t, Class<T> clazz, String fileName) throws JAXBException {
+    public static <T> void marshal(T t, Class<T> clazz, String fileName) throws JAXBException {
         File file = new File("jaxbObjects/" + fileName+ ".xml");
         JAXBContext context = CONTEXT.get(clazz);
         if (context == null) {

@@ -1,5 +1,7 @@
 package com.solvd.socialNetwork.model.user;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import javax.xml.bind.annotation.*;
 
 @XmlRootElement(name = "user")
@@ -7,8 +9,11 @@ import javax.xml.bind.annotation.*;
 @XmlType(propOrder = {"id", "username", "password"})
 
 public class User {
+    @JsonProperty("id")
     private Long id;
+    @JsonProperty("username")
     private String username;
+    @JsonProperty("password")
     private String password;
 
     public User() {
