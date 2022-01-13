@@ -25,7 +25,7 @@ public class JaxBHandler<T> {
             context = JAXBContext.newInstance(clazz);
             CONTEXT.putIfAbsent(clazz, context);
         }
-
+        
         Unmarshaller unmarshaller = context.createUnmarshaller();
         File file = new File("src/main/resources/" + xml);
         Object obj = unmarshaller.unmarshal(file);
@@ -34,6 +34,4 @@ public class JaxBHandler<T> {
         }
         throw new IllegalArgumentException("XML does not represent an instance of type:" + clazz.getName());
     }
-
-
 }
