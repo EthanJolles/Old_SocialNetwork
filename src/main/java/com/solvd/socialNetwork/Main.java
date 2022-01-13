@@ -1,5 +1,6 @@
 package com.solvd.socialNetwork;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.solvd.socialNetwork.dao.jdbcMySQLImpl.UserDaoImpl;
 import com.solvd.socialNetwork.model.order.Product;
@@ -40,9 +41,13 @@ public class Main {
             LOGGER.error(e);
         }
 
-//        ObjectMapper om = new ObjectMapper();
-//        User u = om.readValue();
-//        String result = om.writeValueAsString();
+        try {
+            ObjectMapper om = new ObjectMapper();
+            User u = om.readValue("src/main/resources/user.json", User.class);
+            String result = om.writeValueAsString(u);
+        }catch(JsonProcessingException e) {
+            LOGGER.error(e);
+        }
     }
 
 
