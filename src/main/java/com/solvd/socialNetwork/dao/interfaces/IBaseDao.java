@@ -5,7 +5,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public interface IBaseDao<T> {
-    T resultSetToEntity(ResultSet resultSet);
     void create(T t) throws SQLException;
     T getById(Long id) throws SQLException;
     void update(T entity) throws SQLException;
