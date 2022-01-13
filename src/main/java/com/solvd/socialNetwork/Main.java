@@ -1,6 +1,5 @@
 package com.solvd.socialNetwork;
 
-import com.solvd.socialNetwork.dao.jdbcMySQLImpl.UserDaoImpl;
 import com.solvd.socialNetwork.model.order.Product;
 import com.solvd.socialNetwork.model.user.User;
 import com.solvd.socialNetwork.utils.JaxBHandler;
@@ -8,8 +7,6 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import javax.xml.bind.JAXBException;
-import java.io.FileNotFoundException;
-import java.sql.*;
 
 public class Main {
 
@@ -26,9 +23,20 @@ public class Main {
 
         //JaxB unmarshaller
         try {
-            LOGGER.info(JaxBHandler.unmarshall("product.xml",Product.class));
+            LOGGER.info(JaxBHandler.unmarshall("product.xml", Product.class));
+        } catch (JAXBException e) {
+            LOGGER.error(e);
+        }
+
+        try {
+            User userObj = new User("Test2", "Test2");
+            LOGGER.info("Attempting to marshal");
+            JaxBHandler.marshaller(userObj, User.class, "userObj");
+            LOGGER.info("Marshal completed");
         } catch (JAXBException e) {
             LOGGER.error(e);
         }
     }
+
+
 }

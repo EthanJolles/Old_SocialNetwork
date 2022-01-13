@@ -5,6 +5,7 @@ import org.apache.logging.log4j.Logger;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
+import javax.xml.bind.Marshaller;
 import javax.xml.bind.Unmarshaller;
 import java.io.*;
 import java.util.concurrent.ConcurrentHashMap;
@@ -27,11 +28,23 @@ public class JaxBHandler<T> {
         }
         
         Unmarshaller unmarshaller = context.createUnmarshaller();
-        File file = new File("src/main/resources/" + xml);
+        File file = new File("jaxbObjects/" + xml);
         Object obj = unmarshaller.unmarshal(file);
         if (clazz.isInstance(obj)){
             return clazz.cast(obj);
         }
         throw new IllegalArgumentException("XML does not represent an instance of type:" + clazz.getName());
+    }
+
+    public static <T> void marshaller(T t, Class<T> clazz, String fileName) throws JAXBException {
+        File file = new File("jaxbObjects/" + fileName+ ".xml");
+        JAXBContext context = CONTEXT.get(clazz);
+        if (context == null) {
+            context = JAXBContext.newInstance(clazz);
+            CONTEXT.putIfAbsent(clazz, context);
+        }
+
+        Marshaller marshaller = context.createMarshaller();
+        marshaller.marshal(t, file);
     }
 }
