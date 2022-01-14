@@ -20,10 +20,8 @@ public class ConnectionPool {
 
 
     private ConnectionPool() {
-        LOGGER.info("Entering pool constrsuctor");
         CredentialValues credentialValues = new CredentialValues("db.properties");
         for (int i = 0; i < INITIAL_POOL_SIZE; i++) {
-            LOGGER.info("Creating connection");
             Connection connection;
             try {
                 Class.forName(DRIVER);
@@ -37,20 +35,18 @@ public class ConnectionPool {
     }
 
     public static ConnectionPool getConnectionPool() {
-        LOGGER.info("Getting connection pool");
         if (connectionPool == null) {
             synchronized (ConnectionPool.class) {
-                    connectionPool = new ConnectionPool();
+                connectionPool = new ConnectionPool();
             }
         }
         return connectionPool;
     }
 
-
+    @Deprecated
     private boolean isConnectionAvailable() {
         if (CONNECTIONS.isEmpty()) {
             try {
-                LOGGER.info("connection is empty");
                 Thread.sleep(50);
             } catch (InterruptedException e) {
                 LOGGER.error(e);
@@ -61,13 +57,15 @@ public class ConnectionPool {
     }
 
     public synchronized Connection getConnection() {
-        Connection connection = null;
-        if (isConnectionAvailable()) {
-            LOGGER.info("Pool size = " + CONNECTIONS.size());
-            connection = CONNECTIONS.get(0);
-            CONNECTIONS.remove(0);
-            LOGGER.info("Pool size after = " + CONNECTIONS.size());
+        while (CONNECTIONS.isEmpty()) {
+            try {
+                Thread.sleep(50);
+            } catch (InterruptedException e) {
+                LOGGER.error(e);
+            }
         }
+        Connection connection = CONNECTIONS.get(0);
+        CONNECTIONS.remove(0);
         return connection;
     }
 
