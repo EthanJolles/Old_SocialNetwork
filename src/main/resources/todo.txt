@@ -1,0 +1,6 @@
+# to-do list
+    TODO Add Jackson connectivity for JSON
+    TODO Add streams
+    TODO Add lambda functions
+    TODO Add deadlocking
+    TODO 
