@@ -7,21 +7,21 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.List;
+import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 public class ConnectionPool {
     final static Logger LOGGER = LogManager.getLogger(ConnectionPool.class);
 
     private static ConnectionPool connectionPool = new ConnectionPool();
-    private static final int INITIAL_POOL_SIZE = 5;
-    private final List<Connection> CONNECTIONS = new CopyOnWriteArrayList<>();
+    private final ArrayBlockingQueue<Connection> CONNECTIONS = new ArrayBlockingQueue<>(5);
 
     private static final String DRIVER = "com.mysql.cj.jdbc.Driver";
 
 
     private ConnectionPool() {
         CredentialValues credentialValues = new CredentialValues("db.properties");
-        for (int i = 0; i < INITIAL_POOL_SIZE; i++) {
+        for (int i = 0; i < CONNECTIONS.remainingCapacity(); i++) {
             Connection connection;
             try {
                 Class.forName(DRIVER);
@@ -64,8 +64,12 @@ public class ConnectionPool {
                 LOGGER.error(e);
             }
         }
-        Connection connection = CONNECTIONS.get(0);
-        CONNECTIONS.remove(0);
+        Connection connection = null;
+        try {
+            connection = CONNECTIONS.take();
+        } catch(InterruptedException e) {
+            LOGGER.error(e);
+        }
         return connection;
     }
 
