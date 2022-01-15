@@ -17,12 +17,16 @@ public class Main {
     final static Logger LOGGER = LogManager.getLogger(Main.class);
 
     public static void main(String[] args) {
-        for (int i = 21; i <= 30; i++) {
+        for (int i = 1; i <= 1; i++) {
             try {
                 UserDaoImpl userDao = new UserDaoImpl();
                 User test = new User("test" + i,"" + i);
-                LOGGER.info("Entry:" + i);
                 userDao.create(test);
+                LOGGER.info("Entry:" + i + " completed");
+
+                userDao.delete(test.getId());
+                LOGGER.info("Delete:" + i + " completed");
+
             } catch (Exception e) {
                 LOGGER.error(e);
             }
