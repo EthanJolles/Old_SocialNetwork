@@ -30,7 +30,7 @@ public class UserDaoImpl extends AbstractDao<User> implements IUserDao {
             statement.setString(2, user.getPassword());
             statement.executeUpdate();
         } catch (Exception e) {
-            LOGGER.error(e);
+            LOGGER.error("create " + e);
         } finally {
             assert statement != null;
             statement.close();
@@ -52,7 +52,7 @@ public class UserDaoImpl extends AbstractDao<User> implements IUserDao {
             resultSet = statement.executeQuery();
             user = resultSetToEntity(resultSet);
         } catch (Exception e) {
-            LOGGER.error(e);
+            LOGGER.error("getById " + e);
         } finally {
             assert statement != null;
             statement.close();
@@ -69,7 +69,7 @@ public class UserDaoImpl extends AbstractDao<User> implements IUserDao {
             user.setUsername(resultSet.getString("first_name"));
             user.setPassword(resultSet.getString("last_name"));
         } catch (SQLException e) {
-            LOGGER.error(e);
+            LOGGER.error("resultSetToEntity " + e);
         }
         return user;
     }
@@ -83,9 +83,10 @@ public class UserDaoImpl extends AbstractDao<User> implements IUserDao {
             statement = connection.prepareStatement(UPDATE_USER);
             statement.setString(1,entity.getUsername());
             statement.setString(2, entity.getPassword());
+            statement.setLong(3, entity.getId());
             statement.executeUpdate();
         } catch (Exception e) {
-            LOGGER.error(e);
+            LOGGER.error("update " + e);
         } finally {
             assert statement != null;
             statement.close();
@@ -103,7 +104,7 @@ public class UserDaoImpl extends AbstractDao<User> implements IUserDao {
             statement.setLong(1, id);
             statement.executeUpdate();
         } catch (Exception e) {
-            LOGGER.error(e);
+            LOGGER.error("delete " + e);
         } finally {
             assert statement != null;
             statement.close();
