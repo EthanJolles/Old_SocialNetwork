@@ -13,7 +13,6 @@ import org.apache.logging.log4j.Logger;
 
 import javax.xml.bind.JAXBException;
 import java.io.File;
-import java.io.IOException;
 import java.sql.SQLException;
 
 public class Main {
@@ -45,7 +44,7 @@ public class Main {
                 User test = new User("test" + i,"" + i);
                 userDao.create(test);
                 LOGGER.info("Entry:" + i + " completed");
-            } catch (Exception e) {
+            } catch (SQLException e) {
                 LOGGER.error(e);
             }
         }
