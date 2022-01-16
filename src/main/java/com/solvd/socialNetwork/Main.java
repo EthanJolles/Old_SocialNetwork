@@ -38,6 +38,7 @@ public class Main {
 //            LOGGER.error(e);
 //        }
 
+        //database query test for 'i' amount of queries
 //        for (int i = 1; i <= 1; i++) {
 //            try {
 //                UserDaoImpl userDao = new UserDaoImpl();
@@ -64,16 +65,6 @@ public class Main {
 //        } catch (JAXBException e) {
 //            LOGGER.error(e);
 //        }
-//
-//        try {
-//            File file = new File("src/main/resources/user.json");
-//            ObjectMapper om = new ObjectMapper();
-//            User u = om.readValue(file, User.class);
-//            String result = om.writeValueAsString(u);
-//        }catch(IOException e) {
-//            LOGGER.error(e);
-//        }
-
 //        Deadlock multi = new Deadlock();
 //
 ////        Deadlock
