@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.solvd.socialNetwork.dao.jdbcMySQLImpl.UserDaoImpl;
 import com.solvd.socialNetwork.model.order.Product;
 import com.solvd.socialNetwork.model.user.User;
+import com.solvd.socialNetwork.utils.Deadlock;
 import com.solvd.socialNetwork.utils.JaxBHandler;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -17,17 +18,17 @@ public class Main {
     final static Logger LOGGER = LogManager.getLogger(Main.class);
 
     public static void main(String[] args) {
-        for (int i = 1; i <= 1; i++) {
-            try {
-                UserDaoImpl userDao = new UserDaoImpl();
-                User test = new User("test" + i,"" + i);
-                userDao.create(test);
-                LOGGER.info("Entry:" + i + " completed");
-            } catch (Exception e) {
-                LOGGER.error(e);
-            }
-        }
-
+//        for (int i = 1; i <= 1; i++) {
+//            try {
+//                UserDaoImpl userDao = new UserDaoImpl();
+//                User test = new User("test" + i,"" + i);
+//                userDao.create(test);
+//                LOGGER.info("Entry:" + i + " completed");
+//            } catch (Exception e) {
+//                LOGGER.error(e);
+//            }
+//        }
+//
 //        //JaxB unmarshaller
 //        try {
 //            LOGGER.info(JaxBHandler.unmarshal("product.xml", Product.class));
@@ -51,6 +52,12 @@ public class Main {
 //        }catch(JsonProcessingException e) {
 //            LOGGER.error(e);
 //        }
+
+        Deadlock multi = new Deadlock();
+
+//        Deadlock
+        multi.t1.start();
+        multi.t2.start();
     }
 
 
