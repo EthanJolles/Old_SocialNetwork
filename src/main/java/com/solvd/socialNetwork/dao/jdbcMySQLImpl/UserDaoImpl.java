@@ -42,7 +42,7 @@ public class UserDaoImpl extends AbstractDao<User> implements IUserDao {
     public User getById(Long id) throws SQLException {
         Connection connection = null;
         PreparedStatement statement = null;
-        ResultSet resultSet;
+        ResultSet resultSet = null;
         User user = null;
 
         try {
@@ -56,6 +56,8 @@ public class UserDaoImpl extends AbstractDao<User> implements IUserDao {
         } finally {
             assert statement != null;
             statement.close();
+            assert resultSet != null;
+            resultSet.close();
             ConnectionPool.getConnectionPool().releaseConnection(connection);
         }
         return user;

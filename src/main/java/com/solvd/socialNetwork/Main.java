@@ -23,10 +23,6 @@ public class Main {
                 User test = new User("test" + i,"" + i);
                 userDao.create(test);
                 LOGGER.info("Entry:" + i + " completed");
-
-                userDao.delete(test.getId());
-                LOGGER.info("Delete:" + i + " completed");
-
             } catch (Exception e) {
                 LOGGER.error(e);
             }
