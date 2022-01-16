@@ -6,11 +6,14 @@ import com.solvd.socialNetwork.dao.jdbcMySQLImpl.UserDaoImpl;
 import com.solvd.socialNetwork.model.order.Product;
 import com.solvd.socialNetwork.model.user.User;
 import com.solvd.socialNetwork.utils.Deadlock;
+import com.solvd.socialNetwork.utils.Jackson;
 import com.solvd.socialNetwork.utils.JaxBHandler;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import javax.xml.bind.JAXBException;
+import java.io.File;
+import java.io.IOException;
 import java.sql.SQLException;
 
 public class Main {
@@ -18,6 +21,23 @@ public class Main {
     final static Logger LOGGER = LogManager.getLogger(Main.class);
 
     public static void main(String[] args) {
+//        // deserializer test
+//        try {
+//            User test = Jackson.deserialize(new File("src/main/resources/jsonObjects/user.json"),User.class);
+//            LOGGER.info(test.getUsername());
+//            LOGGER.info(test.getPassword());
+//        } catch (Exception e) {
+//            LOGGER.error(e);
+//        }
+//
+//        //serializer test
+//        try {
+//            User test = new User("ethanjolles", "solvdIntern123");
+//            Jackson.serialize("test", test);
+//        } catch (Exception e) {
+//            LOGGER.error(e);
+//        }
+
 //        for (int i = 1; i <= 1; i++) {
 //            try {
 //                UserDaoImpl userDao = new UserDaoImpl();
@@ -46,19 +66,18 @@ public class Main {
 //        }
 //
 //        try {
+//            File file = new File("src/main/resources/user.json");
 //            ObjectMapper om = new ObjectMapper();
-//            User u = om.readValue("src/main/resources/user.json", User.class);
+//            User u = om.readValue(file, User.class);
 //            String result = om.writeValueAsString(u);
-//        }catch(JsonProcessingException e) {
+//        }catch(IOException e) {
 //            LOGGER.error(e);
 //        }
 
-        Deadlock multi = new Deadlock();
-
-//        Deadlock
-        multi.t1.start();
-        multi.t2.start();
+//        Deadlock multi = new Deadlock();
+//
+////        Deadlock
+//        multi.t1.start();
+//        multi.t2.start();
     }
-
-
 }
