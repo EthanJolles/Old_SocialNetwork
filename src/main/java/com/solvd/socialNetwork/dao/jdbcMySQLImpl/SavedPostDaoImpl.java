@@ -41,7 +41,7 @@ public class SavedPostDaoImpl extends AbstractDao<SavedPost> implements ISavedPo
     public SavedPost getById(Long id) throws SQLException {
         Connection connection = null;
         PreparedStatement statement = null;
-        ResultSet resultSet;
+        ResultSet resultSet = null;
         SavedPost savedPost = null;
 
         try {
@@ -53,8 +53,12 @@ public class SavedPostDaoImpl extends AbstractDao<SavedPost> implements ISavedPo
         } catch (Exception e) {
             LOGGER.error(e);
         } finally {
-            assert statement != null;
-            statement.close();
+            try {
+                close(statement);
+                close(resultSet);
+            } catch (Exception e) {
+                LOGGER.error(e);
+            }
             ConnectionPool.getConnectionPool().releaseConnection(connection);
         }
         return savedPost;

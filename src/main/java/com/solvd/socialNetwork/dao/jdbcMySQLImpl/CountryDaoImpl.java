@@ -42,7 +42,7 @@ public class CountryDaoImpl extends AbstractDao<Country> implements ICountryDao 
     public Country getById(Long id) throws SQLException {
         Connection connection = null;
         PreparedStatement statement = null;
-        ResultSet resultSet;
+        ResultSet resultSet = null;
         Country country = null;
         try {
             connection = ConnectionPool.getConnectionPool().getConnection();
@@ -53,8 +53,12 @@ public class CountryDaoImpl extends AbstractDao<Country> implements ICountryDao 
         } catch (Exception e) {
             LOGGER.error(e);
         } finally {
-            assert statement != null;
-            statement.close();
+            try {
+                close(statement);
+                close(resultSet);
+            } catch (Exception e) {
+                LOGGER.error(e);
+            }
             ConnectionPool.getConnectionPool().releaseConnection(connection);
         }
         return country;

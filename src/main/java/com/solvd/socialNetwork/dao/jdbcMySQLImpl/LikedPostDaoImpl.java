@@ -43,7 +43,7 @@ public class LikedPostDaoImpl extends AbstractDao<LikedPost> implements ILikedPo
     public LikedPost getById(Long id) throws SQLException {
         Connection connection = null;
         PreparedStatement statement = null;
-        ResultSet resultSet;
+        ResultSet resultSet = null;
         LikedPost likedPost = null;
 
         try {
@@ -55,8 +55,12 @@ public class LikedPostDaoImpl extends AbstractDao<LikedPost> implements ILikedPo
         } catch (Exception e) {
             LOGGER.error(e);
         } finally {
-            assert statement != null;
-            statement.close();
+            try {
+                close(statement);
+                close(resultSet);
+            } catch (Exception e) {
+                LOGGER.error(e);
+            }
             ConnectionPool.getConnectionPool().releaseConnection(connection);
         }
         return likedPost;

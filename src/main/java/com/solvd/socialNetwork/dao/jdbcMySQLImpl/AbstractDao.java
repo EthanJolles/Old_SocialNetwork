@@ -14,11 +14,11 @@ public abstract class AbstractDao<T> implements IBaseDao<T> {
 
     public abstract T resultSetToEntity(ResultSet resultSet);
 
-    public void close(Closeable resource) {
+    public void close(AutoCloseable resource) throws Exception {
         assert resource != null;
         try {
             resource.close();
-        } catch (IOException e) {
+        } catch (Exception e) {
             LOGGER.info(e);
         }
     }

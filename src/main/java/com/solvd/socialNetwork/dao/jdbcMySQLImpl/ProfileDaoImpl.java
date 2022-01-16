@@ -48,7 +48,7 @@ public class ProfileDaoImpl extends AbstractDao<Profile> implements IProfileDao 
     public Profile getById(Long id) throws SQLException {
         Connection connection = null;
         PreparedStatement statement = null;
-        ResultSet resultSet;
+        ResultSet resultSet = null;
         Profile profile = null;
 
         try {
@@ -60,8 +60,12 @@ public class ProfileDaoImpl extends AbstractDao<Profile> implements IProfileDao 
         } catch (Exception e) {
             LOGGER.error(e);
         } finally {
-            assert statement != null;
-            statement.close();
+            try {
+                close(statement);
+                close(resultSet);
+            } catch (Exception e) {
+                LOGGER.error(e);
+            }
             ConnectionPool.getConnectionPool().releaseConnection(connection);
         }
         return profile;

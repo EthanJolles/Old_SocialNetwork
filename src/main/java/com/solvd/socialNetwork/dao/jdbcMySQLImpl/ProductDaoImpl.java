@@ -47,7 +47,7 @@ public class ProductDaoImpl extends AbstractDao<Product> implements IProductDao 
     public Product getById(Long id) throws SQLException {
         Connection connection = null;
         PreparedStatement statement = null;
-        ResultSet resultSet;
+        ResultSet resultSet = null;
         Product product = null;
 
         try {
@@ -59,8 +59,12 @@ public class ProductDaoImpl extends AbstractDao<Product> implements IProductDao 
         } catch (Exception e) {
             LOGGER.error(e);
         } finally {
-            assert statement != null;
-            statement.close();
+            try {
+                close(statement);
+                close(resultSet);
+            } catch (Exception e) {
+                LOGGER.error(e);
+            }
             ConnectionPool.getConnectionPool().releaseConnection(connection);
         }
         return product;

@@ -42,7 +42,7 @@ public class RepostDaoImpl extends AbstractDao<Repost> implements IRepostDao {
     public Repost getById(Long id) throws SQLException {
         Connection connection = null;
         PreparedStatement statement = null;
-        ResultSet resultSet;
+        ResultSet resultSet = null;
         Repost repost = null;
 
         try {
@@ -54,8 +54,12 @@ public class RepostDaoImpl extends AbstractDao<Repost> implements IRepostDao {
         } catch (Exception e) {
             LOGGER.error(e);
         } finally {
-            assert statement != null;
-            statement.close();
+            try {
+                close(statement);
+                close(resultSet);
+            } catch (Exception e) {
+                LOGGER.error(e);
+            }
             ConnectionPool.getConnectionPool().releaseConnection(connection);
         }
         return repost;

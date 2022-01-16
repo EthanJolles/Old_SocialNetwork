@@ -41,7 +41,7 @@ public class StateDaoImpl extends AbstractDao<State> implements IStateDao {
     public State getById(Long id) throws SQLException {
         Connection connection = null;
         PreparedStatement statement = null;
-        ResultSet resultSet;
+        ResultSet resultSet = null;
         State state = null;
         try {
             connection = ConnectionPool.getConnectionPool().getConnection();
@@ -52,8 +52,12 @@ public class StateDaoImpl extends AbstractDao<State> implements IStateDao {
         } catch (Exception e) {
             LOGGER.error(e);
         } finally {
-            assert statement != null;
-            statement.close();
+            try {
+                close(statement);
+                close(resultSet);
+            } catch (Exception e) {
+                LOGGER.error(e);
+            }
             ConnectionPool.getConnectionPool().releaseConnection(connection);
         }
         return state;

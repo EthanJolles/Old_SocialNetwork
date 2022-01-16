@@ -6,6 +6,7 @@ import com.solvd.socialNetwork.utils.ConnectionPool;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import java.io.Closeable;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -54,10 +55,12 @@ public class UserDaoImpl extends AbstractDao<User> implements IUserDao {
         } catch (Exception e) {
             LOGGER.error("getById " + e);
         } finally {
-            assert statement != null;
-            statement.close();
-            assert resultSet != null;
-            resultSet.close();
+            try {
+                close(statement);
+                close(resultSet);
+            } catch (Exception e) {
+                LOGGER.error(e);
+            }
             ConnectionPool.getConnectionPool().releaseConnection(connection);
         }
         return user;

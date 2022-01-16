@@ -43,7 +43,7 @@ public class DirectMessageDaoImpl extends AbstractDao<DirectMessage> implements 
     public DirectMessage getById(Long id) throws SQLException {
         Connection connection = null;
         PreparedStatement statement = null;
-        ResultSet resultSet;
+        ResultSet resultSet = null;
         DirectMessage directMessage = null;
         try {
             connection = ConnectionPool.getConnectionPool().getConnection();
@@ -54,8 +54,12 @@ public class DirectMessageDaoImpl extends AbstractDao<DirectMessage> implements 
         } catch (Exception e) {
             LOGGER.error(e);
         } finally {
-            assert statement != null;
-            statement.close();
+            try {
+                close(statement);
+                close(resultSet);
+            } catch (Exception e) {
+                LOGGER.error(e);
+            }
             ConnectionPool.getConnectionPool().releaseConnection(connection);
         }
         return directMessage;
