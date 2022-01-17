@@ -1,11 +1,22 @@
 package com.solvd.socialNetwork.model.userContent;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 public class Post {
 
+    @JsonProperty("id")
     private Long id;
+
+    @JsonProperty("location")
     private String location;
+
+    @JsonProperty("caption")
     private String caption;
+
+    @JsonProperty("isPicture")
     private Boolean isPicture;
+
+    @JsonProperty("userId")
     private Long userId;
 
     public Post() {

@@ -1,9 +1,16 @@
 package com.solvd.socialNetwork.model.userContent;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 public class Comment {
 
+    @JsonProperty("id")
     private Long id;
+
+    @JsonProperty("contents")
     private String contents;
+
+    @JsonProperty("postId")
     private Long postId;
 
     public Comment() {

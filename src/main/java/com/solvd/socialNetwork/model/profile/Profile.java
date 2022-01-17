@@ -1,16 +1,36 @@
 package com.solvd.socialNetwork.model.profile;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.util.Date;
 
 public class Profile {
+
+    @JsonProperty("id")
     private Long id;
+
+    @JsonProperty("firstName")
     private String firstName;
+
+    @JsonProperty("lastname")
     private String lastName;
+
+    @JsonProperty("middleInitial")
     private String middleInitial;
+
+    @JsonProperty("birthday")
     private Date birthday;
+
+    @JsonProperty("age")
     private Long age;
+
+    @JsonProperty("bio")
     private String bio;
+
+    @JsonProperty("isVerified")
     private Boolean isVerified;
+
+    @JsonProperty("userId")
     private Long userId;
 
     public Profile() {

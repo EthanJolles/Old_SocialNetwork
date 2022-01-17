@@ -1,9 +1,21 @@
 package com.solvd.socialNetwork.model.userList;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlType;
+
 public class FriendList {
 
+    @JsonProperty("id")
     private Long id;
+
+    @JsonProperty("profileId")
     private Long profileId;
+
+    @JsonProperty("friendProfileId")
     private Long friendProfileId;
 
     public FriendList() {

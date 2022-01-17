@@ -1,9 +1,16 @@
 package com.solvd.socialNetwork.model.userList;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 public class BlockedList {
 
+    @JsonProperty("id")
     private Long id;
+
+    @JsonProperty("profileId")
     private Long profileId;
+
+    @JsonProperty("blockedProfileId")
     private Long blockedProfileId;
 
     public BlockedList() {

@@ -28,7 +28,7 @@ public class JaxBHandler<T> {
         }
         
         Unmarshaller unmarshaller = context.createUnmarshaller();
-        File file = new File("jaxbObjects/" + xml);
+        File file = new File("src/main/resources/jaxbObjects/" + xml);
         Object obj = unmarshaller.unmarshal(file);
         if (clazz.isInstance(obj)){
             return clazz.cast(obj);
@@ -37,7 +37,7 @@ public class JaxBHandler<T> {
     }
 
     public static <T> void marshal(T t, Class<T> clazz, String fileName) throws JAXBException {
-        File file = new File("jaxbObjects/" + fileName+ ".xml");
+        File file = new File("src/main/resources/jaxbObjects/" + fileName+ ".xml");
         JAXBContext context = CONTEXT.get(clazz);
         if (context == null) {
             context = JAXBContext.newInstance(clazz);

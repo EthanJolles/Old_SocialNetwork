@@ -1,11 +1,22 @@
 package com.solvd.socialNetwork.model.billing;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 public class BillingAddress {
 
+    @JsonProperty("id")
     private Long id;
+
+    @JsonProperty("zip")
     private Integer zip;
+
+    @JsonProperty("street")
     private String street;
+
+    @JsonProperty("userId")
     private Long userId;
+
+    @JsonProperty("cityId")
     private Long cityId;
 
     public BillingAddress() {

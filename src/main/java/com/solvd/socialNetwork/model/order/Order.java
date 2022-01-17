@@ -1,8 +1,16 @@
 package com.solvd.socialNetwork.model.order;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 public class Order {
+
+    @JsonProperty
     private Long id;
+
+    @JsonProperty("userId")
     private Long userId;
+
+    @JsonProperty("productId")
     private Long productId;
 
     public Order() {

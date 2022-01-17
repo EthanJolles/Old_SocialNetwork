@@ -9,10 +9,13 @@ import javax.xml.bind.annotation.*;
 @XmlType(propOrder = {"id", "username", "password"})
 
 public class User {
+
     @JsonProperty("id")
     private Long id;
+
     @JsonProperty("username")
     private String username;
+
     @JsonProperty("password")
     private String password;
 

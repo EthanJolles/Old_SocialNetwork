@@ -1,7 +1,13 @@
 package com.solvd.socialNetwork.model.billing;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 public class Country {
+
+    @JsonProperty("id")
     private Long id;
+
+    @JsonProperty("country")
     private String country;
 
     public Country() {

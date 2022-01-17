@@ -1,8 +1,16 @@
 package com.solvd.socialNetwork.model.billing;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 public class City {
+
+    @JsonProperty("id")
     private Long id;
+
+    @JsonProperty("city")
     private String city;
+
+    @JsonProperty("stateId")
     private Long stateId;
 
     public City() {

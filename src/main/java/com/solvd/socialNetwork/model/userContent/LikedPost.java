@@ -1,8 +1,15 @@
 package com.solvd.socialNetwork.model.userContent;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 public class LikedPost {
+    @JsonProperty("id")
     private Long id;
+
+    @JsonProperty("name")
     private String name;
+
+    @JsonProperty("postId")
     private Long postId;
 
     public LikedPost() {

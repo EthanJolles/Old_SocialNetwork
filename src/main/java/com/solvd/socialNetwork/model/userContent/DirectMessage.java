@@ -1,12 +1,24 @@
 package com.solvd.socialNetwork.model.userContent;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.util.Date;
 
 public class DirectMessage {
+
+    @JsonProperty("id")
     private Long id;
+
+    @JsonProperty("message")
     private String message;
+
+    @JsonProperty("dateSent")
     private Date dateSent;
+
+    @JsonProperty("recipientId")
     private Long recipientId;
+
+    @JsonProperty("userId")
     private Long userId;
 
     public DirectMessage() {
