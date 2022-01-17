@@ -1,10 +1,11 @@
 # to-do list
-    TODO Add Jackson connectivity for JSON
     TODO Add streams
     TODO Add lambda functions
-    TODO Add deadlocking
     TODO Add DAO functionality that can retrieve a row's ID from another element,
-    TODO Add DAO functionality that can delete a row from things like a username
 
 # done
     Change to ArrayBlockingQueue
+    Add Jaxb annotation to all classes
+    Add Jackson connectivity for JSON
+    Add Jackson utility class for easy serialization/deserialization
+    Add deadlocking
