@@ -3,7 +3,7 @@
     <test name="Regression1">
         <groups>
             <run>
-                <include name="" />
+                <include name=" " />
                 <exclude name="" />
             </run>
         </groups>
