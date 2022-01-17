@@ -1,5 +1,7 @@
 package com.solvd.socialNetwork.model.order;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import javax.xml.bind.annotation.*;
 import java.util.Date;
 
@@ -10,20 +12,36 @@ import java.util.Date;
         "sku", "modelNumber", "isOutOfStock"})
 
 public class Product {
+
+    @JsonProperty("id")
     private Long id;
+
+    @JsonProperty("name")
     private String name;
+
+    @JsonProperty("price")
     private Double price;
+
+    @JsonProperty("desc")
     private String desc;
+
+    @JsonProperty("dateListed")
     private Date dateListed;
+
+    @JsonProperty("sku")
     private Long sku;
+
+    @JsonProperty("modelNumber")
     private String modelNumber;
-    private byte[] isOutOfStock;
+
+    @JsonProperty("isOutOfStock")
+    private Boolean isOutOfStock;
 
     public Product() {
     }
 
     public Product(String name, Double price, String desc,
-                   Date dateListed, Long sku, String modelNumber, byte[] isOutOfStock) {
+                   Date dateListed, Long sku, String modelNumber, Boolean isOutOfStock) {
         this.name = name;
         this.price = price;
         this.desc = desc;
@@ -96,11 +114,11 @@ public class Product {
     }
 
     @XmlElement(name = "isOutOfStock")
-    public byte[] getIsOutOfStock() {
+    public Boolean getIsOutOfStock() {
         return isOutOfStock;
     }
 
-    public void setIsOutOfStock(byte[] isOutOfStock) {
+    public void setIsOutOfStock(Boolean isOutOfStock) {
         this.isOutOfStock = isOutOfStock;
     }
 

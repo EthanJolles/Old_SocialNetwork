@@ -30,7 +30,7 @@ public class ProductDaoImpl extends AbstractDao<Product> implements IProductDao 
             statement.setDouble(2, product.getPrice());
             statement.setString(3, product.getDesc());
             statement.setDate(4, (Date) product.getDateListed());
-            statement.setBytes(5, product.getIsOutOfStock());
+            statement.setBoolean(5, product.getIsOutOfStock());
             statement.setLong(6, product.getSku());
             statement.setString(7, product.getModelNumber());
             statement.executeUpdate();
@@ -79,7 +79,7 @@ public class ProductDaoImpl extends AbstractDao<Product> implements IProductDao 
             product.setPrice(resultSet.getDouble("price"));
             product.setDesc(resultSet.getString("desc"));
             product.setDateListed(resultSet.getDate("date_listed"));
-            product.setIsOutOfStock(resultSet.getBytes("is_out_of_stock"));
+            product.setIsOutOfStock(resultSet.getBoolean("is_out_of_stock"));
             product.setSku(resultSet.getLong("sku"));
             product.setModelNumber(resultSet.getString("model_number"));
         } catch (SQLException e) {
