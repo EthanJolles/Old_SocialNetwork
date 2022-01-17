@@ -2,6 +2,12 @@ package com.solvd.socialNetwork.model.order;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import javax.xml.bind.annotation.*;
+
+@XmlRootElement(name = "order")
+@XmlAccessorType(XmlAccessType.PROPERTY)
+@XmlType(propOrder = {"id", "userId", "productId"})
+
 public class Order {
 
     @JsonProperty
@@ -21,6 +27,7 @@ public class Order {
         this.productId = productId;
     }
 
+    @XmlElement(name="id")
     public Long getId() {
         return id;
     }
@@ -29,6 +36,7 @@ public class Order {
         this.id = id;
     }
 
+    @XmlElement(name="userId")
     public Long getUserId() {
         return userId;
     }
@@ -37,6 +45,7 @@ public class Order {
         this.userId = userId;
     }
 
+    @XmlElement(name="productId")
     public Long getProductId() {
         return productId;
     }

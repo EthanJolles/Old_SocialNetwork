@@ -2,6 +2,12 @@ package com.solvd.socialNetwork.model.userContent;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import javax.xml.bind.annotation.*;
+
+@XmlRootElement(name = "comment")
+@XmlAccessorType(XmlAccessType.PROPERTY)
+@XmlType(propOrder = {"id", "contents", "postId"})
+
 public class Comment {
 
     @JsonProperty("id")
@@ -21,6 +27,7 @@ public class Comment {
         this.postId = postId;
     }
 
+    @XmlElement(name="id")
     public Long getId() {
         return id;
     }
@@ -29,6 +36,7 @@ public class Comment {
         this.id = id;
     }
 
+    @XmlElement(name="contents")
     public String getContents() {
         return contents;
     }
@@ -37,6 +45,7 @@ public class Comment {
         this.contents = contents;
     }
 
+    @XmlElement(name="postId")
     public Long getPostId() {
         return postId;
     }

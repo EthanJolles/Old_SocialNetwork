@@ -2,7 +2,13 @@ package com.solvd.socialNetwork.model.profile;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import javax.xml.bind.annotation.*;
 import java.util.Date;
+
+@XmlRootElement(name = "profile")
+@XmlAccessorType(XmlAccessType.PROPERTY)
+@XmlType(propOrder = {"id", "firstName", "lastName", "middleInitial",
+        "birthday", "age", "bio", "isVerified", "userId" })
 
 public class Profile {
 
@@ -12,7 +18,7 @@ public class Profile {
     @JsonProperty("firstName")
     private String firstName;
 
-    @JsonProperty("lastname")
+    @JsonProperty("lastName")
     private String lastName;
 
     @JsonProperty("middleInitial")
@@ -48,6 +54,7 @@ public class Profile {
         this.userId = userId;
     }
 
+    @XmlElement(name="id")
     public Long getId() {
         return id;
     }
@@ -56,6 +63,7 @@ public class Profile {
         this.id = id;
     }
 
+    @XmlElement(name="firstName")
     public String getFirstName() {
         return firstName;
     }
@@ -64,6 +72,7 @@ public class Profile {
         this.firstName = firstName;
     }
 
+    @XmlElement(name="lastName")
     public String getLastName() {
         return lastName;
     }
@@ -72,6 +81,7 @@ public class Profile {
         this.lastName = lastName;
     }
 
+    @XmlElement(name="middleInitial")
     public String getMiddleInitial() {
         return middleInitial;
     }
@@ -80,6 +90,7 @@ public class Profile {
         this.middleInitial = middleInitial;
     }
 
+    @XmlElement(name="birthday")
     public Date getBirthday() {
         return birthday;
     }
@@ -88,6 +99,7 @@ public class Profile {
         this.birthday = birthday;
     }
 
+    @XmlElement(name="age")
     public Long getAge() {
         return age;
     }
@@ -96,6 +108,7 @@ public class Profile {
         this.age = age;
     }
 
+    @XmlElement(name="bio")
     public String getBio() {
         return bio;
     }
@@ -104,14 +117,16 @@ public class Profile {
         this.bio = bio;
     }
 
-    public Boolean getVerified() {
+    @XmlElement(name="isVerified")
+    public Boolean getIsVerified() {
         return isVerified;
     }
 
-    public void setVerified(Boolean verified) {
-        isVerified = verified;
+    public void setIsVerified(Boolean isVerified) {
+        this.isVerified = isVerified;
     }
 
+    @XmlElement(name="userId")
     public Long getUserId() {
         return userId;
     }

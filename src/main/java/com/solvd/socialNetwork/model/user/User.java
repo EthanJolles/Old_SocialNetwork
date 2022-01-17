@@ -34,6 +34,7 @@ public class User {
     public void setId(Long id) {
         this.id = id;
     }
+
     @XmlElement(name = "username")
     public String getUsername() {
         return username;
@@ -42,6 +43,7 @@ public class User {
     public void setUsername(String username) {
         this.username = username;
     }
+
     @XmlElement(name = "password")
     public String getPassword() {
         return password;

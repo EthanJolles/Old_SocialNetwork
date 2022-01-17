@@ -2,6 +2,12 @@ package com.solvd.socialNetwork.model.userContent;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import javax.xml.bind.annotation.*;
+
+@XmlRootElement(name = "post")
+@XmlAccessorType(XmlAccessType.PROPERTY)
+@XmlType(propOrder = {"id", "location", "caption", "isPicture", "userId"})
+
 public class Post {
 
     @JsonProperty("id")
@@ -29,6 +35,7 @@ public class Post {
         this.userId = userId;
     }
 
+    @XmlElement(name="id")
     public Long getId() {
         return id;
     }
@@ -37,6 +44,7 @@ public class Post {
         this.id = id;
     }
 
+    @XmlElement(name="location")
     public String getLocation() {
         return location;
     }
@@ -45,6 +53,7 @@ public class Post {
         this.location = location;
     }
 
+    @XmlElement(name="caption")
     public String getCaption() {
         return caption;
     }
@@ -53,14 +62,16 @@ public class Post {
         this.caption = caption;
     }
 
-    public Boolean getPicture() {
+    @XmlElement(name="isPicture")
+    public Boolean getIsPicture() {
         return isPicture;
     }
 
-    public void setPicture(Boolean picture) {
-        isPicture = picture;
+    public void setIsPicture(Boolean isPicture) {
+        this.isPicture = isPicture;
     }
 
+    @XmlElement(name="userId")
     public Long getUserId() {
         return userId;
     }

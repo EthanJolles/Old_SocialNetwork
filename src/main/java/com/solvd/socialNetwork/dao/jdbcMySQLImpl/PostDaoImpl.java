@@ -27,7 +27,7 @@ public class PostDaoImpl extends AbstractDao<Post> implements IPostDao {
             statement = connection.prepareStatement(CREATE_POST);
             statement.setString(1, post.getLocation());
             statement.setString(2, post.getCaption());
-            statement.setBoolean(3, post.getPicture());
+            statement.setBoolean(3, post.getIsPicture());
             statement.setLong(4, post.getUserId());
             statement.executeUpdate();
         } catch (Exception e) {
@@ -72,7 +72,7 @@ public class PostDaoImpl extends AbstractDao<Post> implements IPostDao {
             post.setId(resultSet.getLong("id"));
             post.setLocation(resultSet.getString("location"));
             post.setCaption(resultSet.getString("caption"));
-            post.setPicture(resultSet.getBoolean("is_picture"));
+            post.setIsPicture(resultSet.getBoolean("is_picture"));
             post.setUserId(resultSet.getLong("user_id"));
         } catch (SQLException e) {
             LOGGER.error(e);

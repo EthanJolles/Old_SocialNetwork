@@ -2,6 +2,12 @@ package com.solvd.socialNetwork.model.billing;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import javax.xml.bind.annotation.*;
+
+@XmlRootElement(name = "city")
+@XmlAccessorType(XmlAccessType.PROPERTY)
+@XmlType(propOrder = {"id", "city", "stateId"})
+
 public class City {
 
     @JsonProperty("id")
@@ -21,6 +27,7 @@ public class City {
         this.stateId = stateId;
     }
 
+    @XmlElement(name="id")
     public Long getId() {
         return id;
     }
@@ -29,6 +36,7 @@ public class City {
         this.id = id;
     }
 
+    @XmlElement(name="city")
     public String getCity() {
         return city;
     }
@@ -37,6 +45,7 @@ public class City {
         this.city = city;
     }
 
+    @XmlElement(name="stateId")
     public Long getStateId() {
         return stateId;
     }

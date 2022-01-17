@@ -2,6 +2,12 @@ package com.solvd.socialNetwork.model.billing;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import javax.xml.bind.annotation.*;
+
+@XmlRootElement(name = "country")
+@XmlAccessorType(XmlAccessType.PROPERTY)
+@XmlType(propOrder = {"id", "country"})
+
 public class Country {
 
     @JsonProperty("id")
@@ -17,6 +23,7 @@ public class Country {
         this.country = country;
     }
 
+    @XmlElement(name="id")
     public Long getId() {
         return id;
     }
@@ -25,6 +32,7 @@ public class Country {
         this.id = id;
     }
 
+    @XmlElement(name="country")
     public String getCountry() {
         return country;
     }

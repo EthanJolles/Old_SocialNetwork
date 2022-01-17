@@ -30,7 +30,7 @@ public class ProfileDaoImpl extends AbstractDao<Profile> implements IProfileDao 
             statement.setString(2, profile.getLastName());
             statement.setString(3, profile.getMiddleInitial());
             statement.setString(4, profile.getBio());
-            statement.setBoolean(5, profile.getVerified());
+            statement.setBoolean(5, profile.getIsVerified());
             statement.setDate(6, (Date) profile.getBirthday());
             statement.setLong(7, profile.getAge());
             statement.setLong(8, profile.getUserId());
@@ -80,7 +80,7 @@ public class ProfileDaoImpl extends AbstractDao<Profile> implements IProfileDao 
             profile.setLastName(resultSet.getString("last_name"));
             profile.setMiddleInitial(resultSet.getString("middle_initial"));
             profile.setBio(resultSet.getString("bio"));
-            profile.setVerified(resultSet.getBoolean("is_verified"));
+            profile.setIsVerified(resultSet.getBoolean("is_verified"));
             profile.setBirthday(resultSet.getDate("birthday"));
             profile.setAge(resultSet.getLong("age"));
             profile.setUserId(resultSet.getLong("user_id"));
@@ -101,7 +101,7 @@ public class ProfileDaoImpl extends AbstractDao<Profile> implements IProfileDao 
             statement.setString(2, entity.getLastName());
             statement.setString(3, entity.getMiddleInitial());
             statement.setString(4, entity.getBio());
-            statement.setBoolean(5, entity.getVerified());
+            statement.setBoolean(5, entity.getIsVerified());
             statement.setDate(6, (Date) entity.getBirthday());
             statement.setLong(7,entity.getAge());
             statement.setLong(8, entity.getUserId());

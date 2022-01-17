@@ -2,10 +2,11 @@ package com.solvd.socialNetwork.model.userList;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlType;
+import javax.xml.bind.annotation.*;
+
+@XmlRootElement(name = "friendList")
+@XmlAccessorType(XmlAccessType.PROPERTY)
+@XmlType(propOrder = {"id", "profileId", "friendProfileId"})
 
 public class FriendList {
 
@@ -26,6 +27,7 @@ public class FriendList {
         this.friendProfileId = friendProfileId;
     }
 
+    @XmlElement(name="id")
     public Long getId() {
         return id;
     }
@@ -34,6 +36,7 @@ public class FriendList {
         this.id = id;
     }
 
+    @XmlElement(name="profileId")
     public Long getProfileId() {
         return profileId;
     }
@@ -42,6 +45,7 @@ public class FriendList {
         this.profileId = profileId;
     }
 
+    @XmlElement(name="friendProfileId")
     public Long getFriendProfileId() {
         return friendProfileId;
     }

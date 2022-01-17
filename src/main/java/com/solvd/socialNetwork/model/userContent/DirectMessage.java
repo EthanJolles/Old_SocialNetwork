@@ -2,7 +2,12 @@ package com.solvd.socialNetwork.model.userContent;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import javax.xml.bind.annotation.*;
 import java.util.Date;
+
+@XmlRootElement(name = "directMessage")
+@XmlAccessorType(XmlAccessType.PROPERTY)
+@XmlType(propOrder = {"id", "message", "dateSent", "recipientId", "userId"})
 
 public class DirectMessage {
 
@@ -31,6 +36,7 @@ public class DirectMessage {
         this.userId = userId;
     }
 
+    @XmlElement(name="id")
     public Long getId() {
         return id;
     }
@@ -39,6 +45,7 @@ public class DirectMessage {
         this.id = id;
     }
 
+    @XmlElement(name="message")
     public String getMessage() {
         return message;
     }
@@ -47,6 +54,7 @@ public class DirectMessage {
         this.message = message;
     }
 
+    @XmlElement(name="dateSent")
     public Date getDateSent() {
         return dateSent;
     }
@@ -55,6 +63,7 @@ public class DirectMessage {
         this.dateSent = dateSent;
     }
 
+    @XmlElement(name="recipientId")
     public Long getRecipientId() {
         return recipientId;
     }
@@ -63,6 +72,7 @@ public class DirectMessage {
         this.recipientId = recipientId;
     }
 
+    @XmlElement(name="userId")
     public Long getUserId() {
         return userId;
     }
